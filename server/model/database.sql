@@ -3,6 +3,7 @@ create table if not exists user(
   fullname varchar(30) not null,
   email varchar(30) not null,
   username varchar(30) not null,
+  user_password varchar(120) not null,
   phone varchar(20) not null,
   photo varchar(100) not null,
   type enum('ordinary', 'artisan'),
