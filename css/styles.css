@@ -18,9 +18,9 @@ html, body {
   font-family: 'Roboto', 'Helvetica', sans-serif;
 }
 .demo-avatar {
-  width: 60px;
-  height: 60px;
-  border-radius: 28px;
+  width: 80px;
+  height: 80px;
+  border-radius: 38px;
 }
 .demo-layout .demo-header .mdl-textfield {
   padding-top: 27px;
@@ -261,12 +261,21 @@ _:-ms-input-placeholder, :root .demo-graph {
   width: 130px;
 }
 
+.applybtn:hover{
+  background-color:red;
+  color: #000000;
+}
+
 .price{
   color: red;
   font-size: 30px;
-  font-weight: lighter;;
 }
 
 .jobtag{
   font-size: 20px;
+}
+
+.usernamearea{
+  margin-bottom: -20px;
+  text-align: center;
 }
