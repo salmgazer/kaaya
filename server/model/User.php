@@ -118,7 +118,7 @@ class User extends adb{
     return $row;
   }
 
-  function getArtisanBySkill($skill){
+  function getArtisansBySkill($skill){
     $this->checkUser();
     $str_sql = "select * from artisan inner join artisan_has_skill on artisan.artisan_id =
     artisan_has_skill.artisan_id inner join skill on artisan_has_skill.skill_id = skill.skill_id
