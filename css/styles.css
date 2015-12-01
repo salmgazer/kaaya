@@ -112,7 +112,7 @@ html, body {
   font-weight: 500;
 }
 .demo-layout .demo-navigation .mdl-navigation__link:hover, .demo-layout .demo-navigation .mdl-navigation__link:active{
-  background-color: #0b6ba7;
+  background-color: #8b9dc3;
   color: #F9F9FA;
 }
 .demo-navigation .mdl-navigation__link .material-icons {
@@ -241,10 +241,8 @@ _:-ms-input-placeholder, :root .demo-graph {
 }
 
 .body-blue{
-  background-color: #0E83CC;
-}
-.navi-items{
-  color: white;
+  /*background-color: #0E83CC;*/
+  background-color: #3b5998;
 }
 .centered{
   margin-left:auto;
@@ -256,19 +254,19 @@ _:-ms-input-placeholder, :root .demo-graph {
 }
 
 .applybtn{
-  background-color: #0091EA;
+  background-color: #3b5998;
   color: #FFFFFF;
-  width: 130px;
+  width: 130px
 }
 
 .applybtn:hover{
-  background-color:red;
-  color: #000000;
+  background-color:#8b9dc3;
 }
 
 .price{
   color: red;
   font-size: 30px;
+  margin-left: 50px;
 }
 
 .jobtag{
@@ -278,4 +276,59 @@ _:-ms-input-placeholder, :root .demo-graph {
 .usernamearea{
   margin-bottom: -20px;
   text-align: center;
+}
+
+.light-blue{
+  background-color: #dfe3ee;
+}
+
+.deep-blue{
+  background-color: #3b5998;
+}
+
+.white-text{
+  color: #ffffff;
+}
+
+.deep-blue-text{
+  color: #3b5998;
+}
+
+.fb-light-blue{
+  background-color: #8b9dc3;
+}
+
+.blue-white-text{
+  color: #dfe3ee;
+}
+
+.center-div{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.text-center {
+  text-align : center;
+}
+.wrapper {
+  margin : auto;
+}
+
+#login-region{
+  margin-top: 100px;
+}
+
+#signup-form{
+  margin-top: 50px;
+}
+.small-margin-right{
+  margin-right: 100px;
+}
+
+.small-margin-left{
+  margin-left: 20px;
+}
+
+.logbtnarea{
+  margin-top: 50px;
 }

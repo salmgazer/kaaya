@@ -29,36 +29,48 @@
   </head>
   <body class="fb-light-blue">
         <div class="mdl-grid" id="login-area">
-          <div class="mdl-card mdl-shadow--2dp wrapper" id="login-region">
+          <form class="mdl-card mdl-shadow--2dp wrapper" id="signup-form">
             <div class="mdl-card__title text-center">
               <h2 class="mdl-card__title-text centered deep-blue-text">Kaaya</h2>
             </div>
               <div class="mdl-card__supporting-text">
-                <form action="#" id="login-form">
-                  <b class="text-center" id="loginstatus"></b>
+                <div action="#">
+                  <b class="text-center" id="signupstatus"></b>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                    <input class="mdl-textfield__input" type="text" id="fullname" />
+                    <label class="mdl-textfield__label" for="fullname"><i class="fa fa-user"></i> fullname</label>
+                  </div>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                    <input class="mdl-textfield__input" type="email" id="email" />
+                    <label class="mdl-textfield__label" for="email"><i class="fa fa-envelope"></i> email</label>
+                  </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                     <input class="mdl-textfield__input" type="text" id="username" />
-                    <label class="mdl-textfield__label" for="sample3"><i class="fa fa-user"></i> username</label>
+                    <label class="mdl-textfield__label" for="username"><i class="fa fa-user"></i> username</label>
                   </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input" type="password" id="password" />
-                    <label class="mdl-textfield__label" for="sample3"><i class="fa fa-key"></i> password</label>
+                    <input class="mdl-textfield__input" type="tel" id="phone"/>
+                    <label class="mdl-textfield__label" for="phone"><i class="fa fa-phone"></i> phone number</label>
                   </div>
-                  <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="user_type_check">
-                  <input type="checkbox" id="user_type_check" class="mdl-switch__input"><b class="small-margin-left">I am an Artisan</b>
-                  <span class="mdl-switch__label"></span>
-                </label>
-                <div class="mdl-card__actions mdl-card--border text-center logbtnarea">
-                  <button class="mdl-button mdl-js-button mdl-js-ripple-effect white-text mdl-button--raised deep-blue" type="submit">
-                    Login
-                  </button>
-                  <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onclick="signupHTML()">
-                    Signup
-                  </a>
-                </div>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                    <input class="mdl-textfield__input" type="password" id="password" onkeyup="comparePasswords()"/>
+                    <label class="mdl-textfield__label" for="password"><i class="fa fa-key"></i> password</label>
+                  </div>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                    <input class="mdl-textfield__input" type="password" id="password2" onkeyup="comparePasswords()"/>
+                    <label class="mdl-textfield__label" for="password2"><i class="fa fa-key"></i> confirm password</label>
+                  </div>
+                  <b class="text-center" id="passequal"></b>
                 </form>
               </div>
-
+              <div class="mdl-card__actions mdl-card--border text-center">
+                <button class="mdl-button mdl-js-button mdl-js-ripple-effect white-text mdl-button--raised deep-blue" type="submit">
+                  Signup
+                </button>
+                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onclick="loginHtml()">
+                  Login
+                </a>
+              </div>
 
           </div>
 
@@ -68,7 +80,7 @@
     <script src="js/script.js"></script>
     <script>
     $(document).ready(function(){
-      
+      //loginHtml();
     });
     </script>
   </body>

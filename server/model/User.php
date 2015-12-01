@@ -1,12 +1,12 @@
-<?php session_start();
+<?php
 
 include "adb.php";
 class User extends adb{
 
   //sign up
-  function signUp($fullname, $email, $username, $phone, $photo, $user_password){
-    $str_sql = "insert into user (user_id, fullname, email, username, phone, photo, user_password) values
-    ('$email', '$fullname', '$email', '$username', '$phone', '$photo', '$user_password')";
+  function signUp($fullname, $email, $username, $phone, $user_password){
+    $str_sql = "insert into user (user_id, fullname, email, username, phone, user_password) values
+('$email', '$fullname', '$email', '$username', '$phone', '$user_password')";
     return $this->query($str_sql);
   }
 
@@ -34,6 +34,14 @@ class User extends adb{
     }
     return $row;
   }
+
+//user currently logged in gets his details
+function getUserDetailsBySession(){
+  $username = $_SESSION['username'];
+  $password = $_SESSION['password'];
+  $user_type = $_SESSION['user_type'];
+  return $this->getUserDetails($username, $password, $user_type);
+}
 
 //get details of a user based on username and password
   function getUserDetails($username, $password, $user_type){
@@ -143,8 +151,9 @@ if($login){
 }else{
   echo "not a user, fucker!!!";
 }*/
-//echo "User id is ".$_SESSION['user_id']."<br>";
-//echo $user->signOut();
+//echo "User fullname is ".$_SESSION['fullname']."<br>";
+//echo $user->getUserDetailsBySession()['fullname'];
+//echo $user->getUserDetails($_SESSION['username'], $_SESSION['password'], $_SESSION['user_type']);
 //echo "User id is ".$_SESSION['user_id'];
 
 //echo $user->becomeArtisan("salifu123", "Nima");

@@ -1,4 +1,4 @@
-<?php
+<?php session_start();
 
 if(!isset($_REQUEST['cmd'])){
   echo '{"result": 0, "message": "Command unknown"}';
@@ -21,7 +21,7 @@ switch ($cmd) {
     break;
 
   case 4:
-    loginUserSession();
+    checkSession();
     break;
 
   case 5:
@@ -39,26 +39,29 @@ switch ($cmd) {
   case 8:
     becomeArtisan();
     break;
+  case 9:
+    getUserDetailsBySession();
+    break;
+
 
   default:
     echo '{"result": 0, "message": "Command unknown"}';
     return;
     break;
 }
-include_once "User.php";
-$user = new User();
+
 function signUp(){
+  include_once "../model/User.php";
+  $user = new User();
   $fullname = $_REQUEST['fullname'];
   $email = $_REQUEST['email'];
   $username = $_REQUEST['username'];
-  //get picture here
-  $photo = $_REQUEST['photo'];
   $phone = $_REQUEST['phone'];
   $user_password = $_REQUEST['password'];
 
-  if($user->signUp($fullname, $email, $username, $phone, $photo, $user_password)){
+  if($user->signUp($fullname, $email, $username, $phone, $user_password)){
     //successfully added send email for confirmation
-    sendEmail($sender, $receipient, $subject, $message);
+    //sendEmail($sender, $receipient, $subject, $message);
 
     //response alert
     echo '{"result": 1, "message": "Your have successfully signed up"}';
@@ -75,6 +78,8 @@ function sendEmail($sender, $receipient, $subject, $message){
 }
 
 function loginUser(){
+  include_once "../model/User.php";
+  $user = new User();
   $username = $_REQUEST['username'];
   $password = $_REQUEST['password'];
   $user_type = $_REQUEST['user_type'];
@@ -89,12 +94,16 @@ function loginUser(){
 }
 
 function checkSession(){
+  include_once "../model/User.php";
+  $user = new User();
   if(isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SESSION['user_type'])){
     $user->loginUserSession();
   }
 }
 
 function signOut(){
+  include_once "../model/User.php";
+  $user = new User();
   if(!$user->signOut()){
     echo '{"result": 0, "Could not sign out"}';
     return;
@@ -104,6 +113,8 @@ function signOut(){
 }
 
 function getUserDetailsById(){
+  include_once "../model/User.php";
+  $user = new User();
   $user_id = $_REQUEST['user_id'];
   $row = $user->getUserDetailsById($user_id);
   if(!$orw){
@@ -114,7 +125,24 @@ function getUserDetailsById(){
   return;
 }
 
+function getUserDetailsBySession(){
+  include_once "../model/User.php";
+  $user = new User();
+  $row = $user->getUserDetailsBySession();
+  if(!$row){
+    echo '{"result": 0, "message": "Could not fetch user details, try again"}';
+    return;
+  }
+  echo '{"result": 1, "user": [';
+    echo json_encode($row);
+    echo ']}';
+  return;
+  }
+
+
 function getArtisansBySkill(){
+  include_once "../model/User.php";
+  $user = new User();
   $skill = $_REQUEST['skill'];
   $row = $user->getArtisansBySkill($skill);
   if(!$orw){
@@ -133,9 +161,15 @@ function getArtisansBySkill(){
   return;
 }
 
-function getArtisansByCommunity(){}
+function getArtisansByCommunity(){
+  include_once "../model/User.php";
+  $user = new User();
+}
 
-function becomeArtisan(){}
+function becomeArtisan(){
+  include_once "../model/User.php";
+  $user = new User();
+}
 
 
  ?>

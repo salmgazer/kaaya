@@ -26,16 +26,17 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="css/material.min.css">
     <link rel="stylesheet" href="css/styles.css">
+
   </head>
   <body>
     <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
-      <header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
+      <header class="demo-header mdl-layout__header mdl-color-text--grey-600 deep-blue">
         <div class="mdl-layout__header-row">
-          <span class="mdl-layout-title">Home</span>
+          <span class="mdl-layout-title white-text">Home</span>
           <div class="mdl-layout-spacer"></div>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
             <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
-              <i class="fa fa-search"></i>
+              <i class="fa fa-search white-text"></i>
             </label>
             <div class="mdl-textfield__expandable-holder">
               <input class="mdl-textfield__input" type="text" id="search">
@@ -43,7 +44,7 @@
             </div>
           </div>
           <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="hdrbtn">
-            <i class="fa fa-bars"></i>
+            <i class="fa fa-bars white-text"></i>
           </button>
           <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="hdrbtn">
             <li class="mdl-menu__item">About</li>
@@ -54,42 +55,64 @@
       </header>
       <div class="demo-drawer mdl-layout__drawer body-blue mdl-color-text--white">
         <header class="demo-drawer-header">
-          <img src="images/user.jpg" class="demo-avatar centered">
-          <h5 class="usernamearea">Salifu Mutaru</h5>
+          <div id="dp-area">
+          </div>
+          <h5 class="usernamearea" id="myfullname">Salifu Mutaru</h5>
         </header>
-        <hr style="background-color: #1e88e5; height: 0.3px;";>
+        <hr style="height: 0.3px;" class="blue-white-text">
         <nav class="demo-navigation mdl-navigation body-blue">
-          <a class="mdl-navigation__link navi-items" href=""><i class="fa fa-home fa-2x"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Home</a>
+          <a class="mdl-navigation__link mdl-js-ripple-effect" href=""><i class="fa fa-home fa-2x"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Home</a>
           <a class="mdl-navigation__link" href=""><i class="fa fa-user fa-2x"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;My Profile</a>
           <a class="mdl-navigation__link" href=""><i class="fa fa-search fa-2x"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Find Jobs</a>
+          <a class="mdl-navigation__link" href=""><i class="fa fa-users fa-2x"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Artisans</a>
           <a class="mdl-navigation__link" href=""><i class="fa fa-plus-circle fa-2x"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create Job</a>
           <a class="mdl-navigation__link" href=""><i class="fa fa-power-off fa-2x"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sign out</a>
         </nav>
       </div>
-      <main class="mdl-layout__content mdl-color--grey-100">
+      <main class="mdl-layout__content mdl-color--grey-10 light-blue">
         <div class="mdl-grid demo-content">
           <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
               <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3970.5946179147395!2d-0.21551778563630966!3d5.626704634499797!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf9be857566009%3A0x628ee2019ec76f8d!2sAchimota+Secondary+School!5e0!3m2!1sen!2sgh!4v1448670042001" width="600" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>
           </div>
           <div class="mdl-grid">
-            <!-- Simple Textfield -->
-            <!--<form action="#" class="mdl-cell mdl-cell--12-col">
-              <div class="mdl-textfield mdl-js-textfield" >
-                <input class="mdl-textfield__input" type="text" id="searchjob">
-                <label class="mdl-textfield__label" for="searchjob">Enter your search...</label>
-              </div>
-            </form>-->
+
             <div class="demo-updates mdl-shadow--2dp mdl-cell mdl-color--white mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-desktop ">
               <div class="mdl-grid">
-                <div class="mdl-cell mdl-cell--8-col">
-                  <p>I need someone to repair my table. The legs are all borken and I want new Mahogany for the legs.</p>
-                </div>
-                <div class="mdl-cell mdl-cell--4-col center-text">
-                  <b class="price">₵50</b>
+                <div class="mdl-cell mdl-cell--12-col">
+                  <p>Replace my table legs with mahogany.</p>
                 </div>
               </div>
-              <div class="mdl-card__supporting-text mdl-color-text--orange-600" style="margin-top: -25px;">
-                <b class="jobtag">Carpentry</b>
+              <div class="mdl-grid mdl-card__supporting-text mdl-color-text--orange-600" style="margin-top: -25px;">
+                <div class="mdl-cell mdl-cell--12-col">
+                <b class="jobtag deep-blue-text mdl-cell mdl-cell--7-col">Carpentry</b>
+                <b class=" mdl-cell mdl-cell--5-col price">₵300</b>
+              </div>
+              </div>
+              <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color-text--grey-600">
+                <div class="mdl-grid mdl-cell--12-col">
+                  <div class="mdl-cell mdl-cell--8-col">
+                <p style="text-align: left;">Posted: 12th March, 2015</p>
+              </div>
+                <div class="mdl-cell mdl-cell--4-col">
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect applybtn">
+                  <b>Apply</b>
+                </button>
+              </div>
+            </div>
+            </div>
+          </div>
+
+            <div class="demo-updates mdl-shadow--2dp mdl-cell mdl-color--white mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-desktop ">
+              <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--12-col">
+                  <p>Get me some vegetables from Kaneshi market.</p>
+                </div>
+              </div>
+              <div class="mdl-grid mdl-card__supporting-text mdl-color-text--orange-600" style="margin-top: -25px;">
+                <div class="mdl-cell mdl-cell--12-col">
+                <b class="jobtag deep-blue-text mdl-cell mdl-cell--7-col">Groceries</b>
+                <b class=" mdl-cell mdl-cell--5-col price">₵150</b>
+              </div>
               </div>
               <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color-text--grey-600">
                 <div class="mdl-grid mdl-cell--12-col">
@@ -107,15 +130,15 @@
 
           <div class="demo-updates mdl-shadow--2dp mdl-cell mdl-color--white mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-desktop ">
             <div class="mdl-grid">
-              <div class="mdl-cell mdl-cell--8-col">
-                <p>I need someone to repair my table. The legs are all borken and I want new Mahogany for the legs.</p>
-              </div>
-              <div class="mdl-cell mdl-cell--4-col center-text">
-                <b class="price">₵50</b>
+              <div class="mdl-cell mdl-cell--12-col">
+                <p>Bath my dogs (3 bulldogs)</p>
               </div>
             </div>
-            <div class="mdl-card__supporting-text mdl-color-text--orange-600" style="margin-top: -25px;">
-              <b class="jobtag">Carpentry</b>
+            <div class="mdl-grid mdl-card__supporting-text mdl-color-text--orange-600" style="margin-top: -25px;">
+              <div class="mdl-cell mdl-cell--12-col">
+              <b class="jobtag deep-blue-text mdl-cell mdl-cell--7-col">Verterinary</b>
+              <b class=" mdl-cell mdl-cell--5-col price">₵250</b>
+            </div>
             </div>
             <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color-text--grey-600">
               <div class="mdl-grid mdl-cell--12-col">
@@ -133,15 +156,15 @@
 
         <div class="demo-updates mdl-shadow--2dp mdl-cell mdl-color--white mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-desktop ">
           <div class="mdl-grid">
-            <div class="mdl-cell mdl-cell--8-col">
-              <p>I need someone to repair my table. The legs are all borken and I want new Mahogany for the legs.</p>
-            </div>
-            <div class="mdl-cell mdl-cell--4-col center-text">
-              <b class="price">₵50</b>
+            <div class="mdl-cell mdl-cell--12-col">
+              <p>Replace my car wheels (Tico), all four</p>
             </div>
           </div>
-          <div class="mdl-card__supporting-text mdl-color-text--orange-600" style="margin-top: -25px;">
-            <b class="jobtag">Carpentry</b>
+          <div class="mdl-grid mdl-card__supporting-text mdl-color-text--orange-600" style="margin-top: -25px;">
+            <div class="mdl-cell mdl-cell--12-col">
+            <b class="jobtag deep-blue-text mdl-cell mdl-cell--7-col">Carpentry</b>
+            <b class=" mdl-cell mdl-cell--5-col price">₵750</b>
+          </div>
           </div>
           <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color-text--grey-600">
             <div class="mdl-grid mdl-cell--12-col">
@@ -157,36 +180,17 @@
         </div>
       </div>
 
-      <div class="demo-updates mdl-shadow--2dp mdl-cell mdl-color--white mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-desktop ">
-        <div class="mdl-grid">
-          <div class="mdl-cell mdl-cell--8-col">
-            <p>I need someone to repair my table. The legs are all borken and I want new Mahogany for the legs.</p>
-          </div>
-          <div class="mdl-cell mdl-cell--4-col center-text">
-            <b class="price">₵50</b>
-          </div>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--orange-600" style="margin-top: -25px;">
-          <b class="jobtag">Carpentry</b>
-        </div>
-        <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color-text--grey-600">
-          <div class="mdl-grid mdl-cell--12-col">
-            <div class="mdl-cell mdl-cell--8-col">
-          <p style="text-align: left;">Posted: 12th March, 2015</p>
-        </div>
-          <div class="mdl-cell mdl-cell--4-col">
-          <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect applybtn">
-            <b>Apply</b>
-          </button>
-        </div>
-      </div>
-      </div>
-    </div>
           </div>
         </div>
       </main>
     </div>
+    <script src="js/jquery.js"></script>
     <script src="js/material.min.js"></script>
     <script src="js/script.js"></script>
+    <script>
+    $(document).ready(function(){
+      getUserDetailsBySession();
+    });
+     </script>
   </body>
 </html>
