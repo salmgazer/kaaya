@@ -11,11 +11,8 @@ class User extends adb{
   }
 
   function signOut(){
-    if(session_destroy()){
-      return true;
-    }else{
-      return false;
-    }
+    session_destroy();
+    return true;
   }
 
 //get details of a user based on his id

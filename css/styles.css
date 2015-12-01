@@ -332,3 +332,7 @@ _:-ms-input-placeholder, :root .demo-graph {
 .logbtnarea{
   margin-top: 50px;
 }
+
+.orange{
+  background-color: #FFC300;
+}

@@ -72,6 +72,13 @@ $(function(){
   });
 });
 
+$(function(){
+  $("#signout").click(function(e){
+    e.preventDefault();
+    signOut();
+  })
+})
+
 
 function signUp(p1){
   if(p1.length < 8){
@@ -141,4 +148,13 @@ function getUserDetailsBySession(){
   document.getElementById('myfullname').innerHTML = fullname;
   document.getElementById('dp-area').innerHTML = '<img src="images/"'+photo+' class="demo-avatar centered">';
   //alert(objResult.user[0]['fullname']);
+}
+
+function signOut(){
+  var strUrl = link+"10";
+  objResult = sendRequest(strUrl);
+  //doAdelay();
+  if(objResult.result == 1){
+    window.location.href = "index.html";
+  }  
 }

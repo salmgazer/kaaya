@@ -42,6 +42,9 @@ switch ($cmd) {
   case 9:
     getUserDetailsBySession();
     break;
+  case 10:
+    signOut();
+    break;
 
 
   default:
@@ -104,12 +107,10 @@ function checkSession(){
 function signOut(){
   include_once "../model/User.php";
   $user = new User();
-  if(!$user->signOut()){
-    echo '{"result": 0, "Could not sign out"}';
+  if($user->signOut()){
+    echo '{"result": 1, "You have successfully signed out"}';
     return;
   }
-  echo '{"result": 1, "You have successfully signed out"}';
-  return;
 }
 
 function getUserDetailsById(){
@@ -170,6 +171,7 @@ function becomeArtisan(){
   include_once "../model/User.php";
   $user = new User();
 }
+
 
 
  ?>
