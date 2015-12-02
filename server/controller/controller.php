@@ -48,6 +48,9 @@ switch ($cmd) {
   case 11:
     createJob();
     break;
+  case 12:
+    updateProfile();
+    break;
 
   default:
     echo '{"result": 0, "message": "Command unknown"}';
@@ -186,6 +189,22 @@ function createJob(){
     return;
   }
   echo '{"result": 1, "message": "Your job has been added"}';
+  return;
+}
+
+function updateProfile(){
+  include_once "../model/User.php";
+  $user = new User();
+
+  $newcommunity = $_REQUEST['newcommunity'];
+  $newphone = $_REQUEST['newphone'];
+  $newemail = $_REQUEST['newemail'];
+
+  if(!$user->updateProfile($newcommunity, $newphone, $newemail)){
+    echo '{"result": 0, "message": "Update was unsuccessful"}';
+    return;
+  }
+  echo '{"result": 1, "message": "Update was successful"}';
   return;
 }
 

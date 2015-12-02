@@ -47,9 +47,9 @@ function getUserDetailsBySession(){
   function getUserDetails($username, $password, $user_type){
     $str_sql = "";
     if($user_type == "ordinary"){
-      $str_sql = "select * from user where username = '$username' AND user_password = '$password' limit 0,1";
+      $str_sql = "select * from user where username = '$username' AND user_password = '$password' AND type = '$user_type' limit 0,1";
     }else if($user_type == "artisan"){
-      $str_sql = "select * from user inner join artisan on user.user_id = artisan.artisan_id where user.username = '$username' AND user.user_password = '$password' limit 0,1";
+      $str_sql = "select * from user inner join artisan on user.user_id = artisan.artisan_id where user.username = '$username' AND user.user_password = '$password' AND user.type = '$user_type' limit 0,1";
     }
     $this->query($str_sql);
     $row = $this->fetch();
@@ -74,9 +74,8 @@ function getUserDetailsBySession(){
       $_SESSION['phone'] = $row['phone'];
       $_SESSION['user_id'] = $row['user_id'];
       if($row['type'] == "artisan"){
-        if(($row['location_latitude'] != null) && ($row['location_longitude'] != null)){
-          $_SESSION['longitude'] = $row['location_longitude'];
-          $_SESSION['latitude'] = $row['location_latitude'];
+        if($row['community'] != null){
+          $_SESSION['community'] = $row['community'];
         }
       }
     }
@@ -152,6 +151,24 @@ function getUserDetailsBySession(){
   }
     return false;
   }
+
+  function updateProfile($newcommunity, $newphone, $newemail){
+    $this->checkUser();
+    $user_id = $_SESSION['user_id'];
+    $str_sql = "";
+    $user_type = $_SESSION['user_type'];
+
+      $str_sql = "update user set phone = '$newphone', email = '$newemail' where user_id='$user_id'";
+      $row = $this->query($str_sql);
+      if($user_type == 'ordinary'){
+        return $row;
+      }
+      $community = $_SESSION['community'];
+      if($user_type == 'artisan' && $newcommunity != $_SESSION['community']){
+        $str_sql = "update artisan set community = '$newcommunity' where artisan_id = '$user_id'";
+        return $this->query($str_sql);
+      }
+    }
 
 }
 

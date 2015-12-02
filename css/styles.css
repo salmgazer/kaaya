@@ -336,3 +336,16 @@ _:-ms-input-placeholder, :root .demo-graph {
 .orange{
   background-color: #FFC300;
 }
+
+.sea-blue{
+  background-color: #5724fd;
+}
+
+.whiten{
+  background-color: #f8faf7;
+}
+
+.becomeArtisanBtn:hover{
+  background-color: #8b9dc3;
+  color: #f8faf7;
+}

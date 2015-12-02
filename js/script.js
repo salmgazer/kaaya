@@ -4,6 +4,8 @@ var photo = "user.png";
 var fullname = "";
 var phone = "";
 var email = "";
+var user_type = "";
+var community = "";
 
 //sends request to Ajax page
 function sendRequest(u){
@@ -92,6 +94,14 @@ $(function(){
   })
 })
 
+//event to editing frofile
+$(function(){
+  $("#profile-form").submit(function(e){
+    e.preventDefault();
+    updateProfile();
+  })
+})
+
 
 function signUp(p1){
   var signupstatus = document.getElementById('signupstatus');
@@ -134,7 +144,7 @@ function login(username, password, user_type){
   objResult = sendRequest(strUrl);
 
   if(objResult.result == 0){
-    loginstat.innerHTML = "Login was unsuccessful";
+    loginstat.innerHTML = "Login was unsuccessful, check details and user type.";
     loginstat.style.color = "red";
   }
   else{
@@ -160,6 +170,9 @@ function getUserDetailsBySession(){
   fullname = mydetails['fullname'];
   phone = mydetails['phone'];
   photo = mydetails['photo'];
+  user_type = mydetails['type'];
+  if(user_type == "artisan")
+    community = mydetails['community'];
 //pimp with details
   document.getElementById('myfullname').innerHTML = fullname;
   document.getElementById('dp-area').innerHTML = '<img src="images/"'+photo+' class="demo-avatar centered">';
@@ -168,7 +181,7 @@ function getUserDetailsBySession(){
 
 function signOut(){
   var strUrl = link+"10";
-  objResult = sendRequest(strUrl);
+  var objResult = sendRequest(strUrl);
   doAdelay();
   if(objResult.result == 1){
          window.location.href = "index.html";
@@ -210,4 +223,48 @@ function createJob(){
   report.innerHTML = "Your new job has been added";
   report.style.color = "green";
 
+}
+
+//inserts user details into profile form
+function fillProfileForm(){
+  document.getElementById('name_area').innerHTML = fullname;
+  document.getElementById('username_area').innerHTML = username;
+  if(user_type == "artisan"){
+    document.getElementById('community-area').innerHTML = "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo'><input class='mdl-textfield__input' type='text' id='community' value='Nima'/><label class='mdl-textfield__label' for='community'><i class='fa fa-users'></i> community</label></div>";
+  }
+  else{
+    document.getElementById('artisanBtn').innerHTML = "<button class='becomeArtisanBtn mdl-button mdl-js-button mdl-js-ripple-effect whiten mdl-button--raised deep-blue-text centered' id='becomeArtisanBtn'>Become An Artisan</button>";
+  }
+
+  document.getElementById('phone').value = phone;
+  document.getElementById('email').value = email;
+  if(user_type == "artisan"){
+    document.getElementById('community').value = community;
+  }
+}
+
+function updateProfile(){
+  var strUrl = "";
+  var form_report = document.getElementById('myprofileFormReport');
+  var newcommunity = "";
+  var newphone = $("#phone").val();
+  var newemail = $("#email").val();
+  if(user_type == "artisan"){
+    newcommunity = $("#community").val();
+  }
+  if(newcommunity == community && newphone == phone && newemail == email){
+    form_report.innerHTML = "Profile details are still the same";
+    form_report.style.color = "red";
+    return;
+  }
+    strUrl = link+"12&newphone="+newphone+"&newemail="+newemail+"&newcommunity="+newcommunity;
+    alert(strUrl);
+    var objResult = sendRequest(strUrl);
+    if(objResult.result == 0){
+      form_report.innerHTML = "Update was unsuccessful.";
+      form_report.style.color = "red";
+      return;
+    }
+    form_report.innerHTML = "Profile update was successful";
+    form_report.style.color = "green";
 }
