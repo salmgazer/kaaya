@@ -102,19 +102,17 @@ function getUserDetailsBySession(){
     }
   }
 
-  function becomeArtisan($username, $community){
+  function becomeArtisan(){
     $this->checkUser();
-    $str_sql = "update user set type = 'artisan' where username = '$username'";
+    $user_id = $_SESSION['user_id'];
+    $str_sql = "update user set type = 'artisan' where user_id = '$user_id'";
     if (!$this->query($str_sql)) {
       return false;
     }
     //$user_id = $_
-    $str_sql = "insert into artisan(artisan_id, community) values ('".$_SESSION['user_id']."', '$community')";
-    if(!$this->query($str_sql)){
-      //Allow user to
-      return false;
-    }
-    return true;
+    $str_sql = "insert into artisan(artisan_id) values ('$user_id')";
+    //if(!$this->query($str_sql)){
+    return $this->query($str_sql);
   }
 
   function getArtisansByCommunity($community){
@@ -173,6 +171,7 @@ function getUserDetailsBySession(){
 }
 
 //$user = new User();
+//echo $_SESSION['fullname'];
 //echo $user->createJob(210, "I need my car washed", "I live in a muddy area, so car easily gets dirty. You are gonna wipe out all the mud");
 
 //$details = $user->getUserDetails("tester4real", "tester123", "ordinary");

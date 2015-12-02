@@ -349,3 +349,7 @@ _:-ms-input-placeholder, :root .demo-graph {
   background-color: #8b9dc3;
   color: #f8faf7;
 }
+
+.white-text{
+  color: #f8faf7;
+}

@@ -175,6 +175,12 @@ function getArtisansByCommunity(){
 function becomeArtisan(){
   include_once "../model/User.php";
   $user = new User();
+  if(!$user->becomeArtisan()){
+    echo '{"result": 0, "message": "unsuccessful, try again. Check internet"}';
+    return;
+  }
+  echo '{"result": 1, "message": "You are now an artisan!"}';
+  return;
 }
 
 function createJob(){

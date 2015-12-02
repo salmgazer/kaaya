@@ -83,24 +83,34 @@ $(function(){
   $("#signout").click(function(e){
     e.preventDefault();
     signOut();
-  })
-})
+  });
+});
 
 //event to create job
 $(function(){
   $("#createjob-form").submit(function(e){
     e.preventDefault();
     createJob();
-  })
-})
+  });
+});
 
 //event to editing frofile
 $(function(){
   $("#profile-form").submit(function(e){
     e.preventDefault();
     updateProfile();
-  })
-})
+  });
+});
+
+//event to editing frofile
+$(function(){
+  $("#becomeArtisanBtn").click(function(e){
+    alert("yes");
+    //e.preventDefault();
+  //  becomeArtisan();
+  });
+});
+
 
 
 function signUp(p1){
@@ -175,7 +185,7 @@ function getUserDetailsBySession(){
     community = mydetails['community'];
 //pimp with details
   document.getElementById('myfullname').innerHTML = fullname;
-  document.getElementById('dp-area').innerHTML = '<img src="images/"'+photo+' class="demo-avatar centered">';
+//  document.getElementById('dp-area').innerHTML = '<img src="images/"'+photo+' class="demo-avatar centered">';
   //alert(objResult.user[0]['fullname']);
 }
 
@@ -233,7 +243,7 @@ function fillProfileForm(){
     document.getElementById('community-area').innerHTML = "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo'><input class='mdl-textfield__input' type='text' id='community' value='Nima'/><label class='mdl-textfield__label' for='community'><i class='fa fa-users'></i> community</label></div>";
   }
   else{
-    document.getElementById('artisanBtn').innerHTML = "<button class='becomeArtisanBtn mdl-button mdl-js-button mdl-js-ripple-effect whiten mdl-button--raised deep-blue-text centered' id='becomeArtisanBtn'>Become An Artisan</button>";
+    document.getElementById('artisanBtn').innerHTML = '<button class="becomeArtisanBtn mdl-button mdl-js-button mdl-js-ripple-effect whiten mdl-button--raised deep-blue-text centered" onclick="becomeArtisan()">Become An Artisan</button>';
   }
 
   document.getElementById('phone').value = phone;
@@ -267,4 +277,19 @@ function updateProfile(){
     }
     form_report.innerHTML = "Profile update was successful";
     form_report.style.color = "green";
+}
+
+function becomeArtisan(){
+  var form_report = document.getElementById('myprofileFormReport');
+  var strUrl = link+"8";
+  var objResult = sendRequest(strUrl);
+  form_report.innerHTML = objResult.message;
+  if(objResult.result == 0){
+    form_report.style.color = "red";
+    return;
+  }
+  document.getElementById('artisanBtn').innerHTML = "";
+  form_report.style.color = "green";
+  doLongdelay();
+  window.location.href = "profile.html";
 }
