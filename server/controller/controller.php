@@ -42,7 +42,15 @@ switch ($cmd) {
   case 9:
     getUserDetailsBySession();
     break;
-
+  case 10:
+    signOut();
+    break;
+  case 11:
+    createJob();
+    break;
+  case 12:
+    updateProfile();
+    break;
 
   default:
     echo '{"result": 0, "message": "Command unknown"}';
@@ -102,14 +110,12 @@ function checkSession(){
 }
 
 function signOut(){
-  include_once "../model/User.php";
-  $user = new User();
-  if(!$user->signOut()){
-    echo '{"result": 0, "Could not sign out"}';
+  if(session_destroy()){
+        echo '{"result":1,"message": "Logged out successfully"}';
+        return;
+    }
+    echo '{"result":0,"message": "Could not log you out, try again."}';
     return;
-  }
-  echo '{"result": 1, "You have successfully signed out"}';
-  return;
 }
 
 function getUserDetailsById(){
@@ -170,6 +176,38 @@ function becomeArtisan(){
   include_once "../model/User.php";
   $user = new User();
 }
+
+function createJob(){
+  include_once "../model/User.php";
+  $user = new User();
+  $starting_price = $_REQUEST['starting_price'];
+  $summary = $_REQUEST['summary'];
+  $description = $_REQUEST['description'];
+  $community = $_REQUEST['community'];
+  if(!$user->createJob($starting_price, $summary, $description, $community)){
+    echo '{"result": 0, "message": "Could not add your job, try again"}';
+    return;
+  }
+  echo '{"result": 1, "message": "Your job has been added"}';
+  return;
+}
+
+function updateProfile(){
+  include_once "../model/User.php";
+  $user = new User();
+
+  $newcommunity = $_REQUEST['newcommunity'];
+  $newphone = $_REQUEST['newphone'];
+  $newemail = $_REQUEST['newemail'];
+
+  if(!$user->updateProfile($newcommunity, $newphone, $newemail)){
+    echo '{"result": 0, "message": "Update was unsuccessful"}';
+    return;
+  }
+  echo '{"result": 1, "message": "Update was successful"}';
+  return;
+}
+
 
 
  ?>

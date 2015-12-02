@@ -4,6 +4,8 @@ var photo = "user.png";
 var fullname = "";
 var phone = "";
 var email = "";
+var user_type = "";
+var community = "";
 
 //sends request to Ajax page
 function sendRequest(u){
@@ -45,6 +47,10 @@ function doAdelay(){
  setTimeout(function(){return true;},30000);
 }
 
+//delay longer for next action
+function doLongdelay(){
+ setTimeout(function(){return true;},60000);
+}
 //submit event for signup form
 $(function(){
   $("#signup-form").submit(function(e){
@@ -72,8 +78,33 @@ $(function(){
   });
 });
 
+//event to signout user
+$(function(){
+  $("#signout").click(function(e){
+    e.preventDefault();
+    signOut();
+  })
+})
+
+//event to create job
+$(function(){
+  $("#createjob-form").submit(function(e){
+    e.preventDefault();
+    createJob();
+  })
+})
+
+//event to editing frofile
+$(function(){
+  $("#profile-form").submit(function(e){
+    e.preventDefault();
+    updateProfile();
+  })
+})
+
 
 function signUp(p1){
+  var signupstatus = document.getElementById('signupstatus');
   if(p1.length < 8){
     alert("password must be at least 8 characters long");
   }
@@ -94,13 +125,15 @@ function signUp(p1){
   }
 
   var strUrl = link+"1&fullname="+fullname+"&email="+email+"&username="+username+"&phone="+phone+"&password="+password;
-  alert(strUrl);
   var objResult = sendRequest(strUrl);
   if(objResult.result == 0){
-    alert("Signup was unsuccessful");
+    signupstatus.innerHTML = "Signup unsuccessful successful!";
+    signupstatus.style.color = "red";
     return;
   }
-  alert("Signup was successful");
+  signupstatus.innerHTML = "Signup was successful";
+  signupstatus.style.color = "green";
+  doLongdelay();
   window.location.href = "index.html";
 }
 
@@ -111,7 +144,7 @@ function login(username, password, user_type){
   objResult = sendRequest(strUrl);
 
   if(objResult.result == 0){
-    loginstat.innerHTML = "Login was unsuccessful";
+    loginstat.innerHTML = "Login was unsuccessful, check details and user type.";
     loginstat.style.color = "red";
   }
   else{
@@ -137,8 +170,101 @@ function getUserDetailsBySession(){
   fullname = mydetails['fullname'];
   phone = mydetails['phone'];
   photo = mydetails['photo'];
+  user_type = mydetails['type'];
+  if(user_type == "artisan")
+    community = mydetails['community'];
 //pimp with details
   document.getElementById('myfullname').innerHTML = fullname;
   document.getElementById('dp-area').innerHTML = '<img src="images/"'+photo+' class="demo-avatar centered">';
   //alert(objResult.user[0]['fullname']);
+}
+
+function signOut(){
+  var strUrl = link+"10";
+  var objResult = sendRequest(strUrl);
+  doAdelay();
+  if(objResult.result == 1){
+         window.location.href = "index.html";
+     return;
+     }
+    alert(objResult.message);
+}
+
+function createJob(){
+  var summary = $("#summary").val();
+  var starting_price = $("#starting_price").val();
+  var description = $("#description").val();
+  var community = $("#community").val();
+  var report = document.getElementById('jobadd-report');
+  //alert(summary); alert(starting_price); alert(description); alert(community);
+
+  if(summary.length < 20){
+    report.innerHTML = "Summary must be between 20 and 30 characters";
+    report.style.color = "red";
+    return;
+  }
+  if (starting_price <= 0) {
+    report.innerHTML = "Starting price can't be empty";
+    report.style.color = "red";
+    return;
+  }
+  if(community.length <= 3){
+    report.innerHTML = "Write full name of community";
+    report.style.color = "red";
+    return;
+  }
+  var strUrl = link+"11&summary="+summary+"&starting_price="+starting_price+"&description="+description+"&community="+community;
+  var objResult = sendRequest(strUrl);
+  if(objResult.result == 0){
+    report.innerHTML = "Sorry, could not add job.<br> Check internet and try again";
+    report.style.color = "red";
+    return;
+  }
+  report.innerHTML = "Your new job has been added";
+  report.style.color = "green";
+
+}
+
+//inserts user details into profile form
+function fillProfileForm(){
+  document.getElementById('name_area').innerHTML = fullname;
+  document.getElementById('username_area').innerHTML = username;
+  if(user_type == "artisan"){
+    document.getElementById('community-area').innerHTML = "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo'><input class='mdl-textfield__input' type='text' id='community' value='Nima'/><label class='mdl-textfield__label' for='community'><i class='fa fa-users'></i> community</label></div>";
+  }
+  else{
+    document.getElementById('artisanBtn').innerHTML = "<button class='becomeArtisanBtn mdl-button mdl-js-button mdl-js-ripple-effect whiten mdl-button--raised deep-blue-text centered' id='becomeArtisanBtn'>Become An Artisan</button>";
+  }
+
+  document.getElementById('phone').value = phone;
+  document.getElementById('email').value = email;
+  if(user_type == "artisan"){
+    document.getElementById('community').value = community;
+  }
+}
+
+function updateProfile(){
+  var strUrl = "";
+  var form_report = document.getElementById('myprofileFormReport');
+  var newcommunity = "";
+  var newphone = $("#phone").val();
+  var newemail = $("#email").val();
+  if(user_type == "artisan"){
+    newcommunity = $("#community").val();
+  }
+  if(newcommunity == community && newphone == phone && newemail == email){
+    form_report.innerHTML = "Profile details are still the same";
+    form_report.style.color = "red";
+    return;
+  }
+    strUrl = link+"12&newphone="+newphone+"&newemail="+newemail+"&newcommunity="+newcommunity;
+    alert(strUrl);
+    var objResult = sendRequest(strUrl);
+    if(objResult.result == 0){
+      form_report.innerHTML = "Update was unsuccessful.";
+      form_report.style.color = "red";
+      return;
+    }
+    form_report.innerHTML = "Profile update was successful";
+    form_report.style.color = "green";
 }

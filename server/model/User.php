@@ -11,11 +11,8 @@ class User extends adb{
   }
 
   function signOut(){
-    if(session_destroy()){
-      return true;
-    }else{
-      return false;
-    }
+    session_destroy();
+    return true;
   }
 
 //get details of a user based on his id
@@ -37,19 +34,22 @@ class User extends adb{
 
 //user currently logged in gets his details
 function getUserDetailsBySession(){
-  $username = $_SESSION['username'];
-  $password = $_SESSION['password'];
-  $user_type = $_SESSION['user_type'];
-  return $this->getUserDetails($username, $password, $user_type);
+  if(isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SESSION['user_type'])){
+    $username = $_SESSION['username'];
+    $password = $_SESSION['password'];
+    $user_type = $_SESSION['user_type'];
+    return $this->getUserDetails($username, $password, $user_type);
+  }
+  return false;
 }
 
 //get details of a user based on username and password
   function getUserDetails($username, $password, $user_type){
     $str_sql = "";
     if($user_type == "ordinary"){
-      $str_sql = "select * from user where username = '$username' AND user_password = '$password' limit 0,1";
+      $str_sql = "select * from user where username = '$username' AND user_password = '$password' AND type = '$user_type' limit 0,1";
     }else if($user_type == "artisan"){
-      $str_sql = "select * from user inner join artisan on user.user_id = artisan.artisan_id where user.username = '$username' AND user.user_password = '$password' limit 0,1";
+      $str_sql = "select * from user inner join artisan on user.user_id = artisan.artisan_id where user.username = '$username' AND user.user_password = '$password' AND user.type = '$user_type' limit 0,1";
     }
     $this->query($str_sql);
     $row = $this->fetch();
@@ -74,9 +74,8 @@ function getUserDetailsBySession(){
       $_SESSION['phone'] = $row['phone'];
       $_SESSION['user_id'] = $row['user_id'];
       if($row['type'] == "artisan"){
-        if(($row['location_latitude'] != null) && ($row['location_longitude'] != null)){
-          $_SESSION['longitude'] = $row['location_longitude'];
-          $_SESSION['latitude'] = $row['location_latitude'];
+        if($row['community'] != null){
+          $_SESSION['community'] = $row['community'];
         }
       }
     }
@@ -89,15 +88,18 @@ function getUserDetailsBySession(){
   }
 
   function checkUser(){
-    $username = $_SESSION['username'];
-    $password = $_SESSION['password'];
-    $user_type = $_SESSION['user_type'];
-    $row = $this->getUserDetails($username, $password, $user_type);
-    if(!$row){
-      //redirect user to login page
+    if(isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SESSION['user_type'])){
+      $username = $_SESSION['username'];
+      $password = $_SESSION['password'];
+      $user_type = $_SESSION['user_type'];
+      $row = $this->getUserDetails($username, $password, $user_type);
+      if(!$row){
+        //redirect user to login page
+        return false;
+      }
+    }else{
       return false;
     }
-    //do nothing :: user is genuine
   }
 
   function becomeArtisan($username, $community){
@@ -139,10 +141,40 @@ function getUserDetailsBySession(){
      return $row;
   }
 
+  function createJob($starting_price, $summary, $description, $community){
+    $this->checkUser();
+    if(isset($_SESSION['user_id'])){
+      $assigner_id = $_SESSION['user_id'];
+      $str_sql = "insert into job(assigner_id, starting_price, summary, description, community) values ('$assigner_id',
+      '$starting_price', '$summary', '$description', '$community')";
+      return $this->query($str_sql);
+  }
+    return false;
+  }
+
+  function updateProfile($newcommunity, $newphone, $newemail){
+    $this->checkUser();
+    $user_id = $_SESSION['user_id'];
+    $str_sql = "";
+    $user_type = $_SESSION['user_type'];
+
+      $str_sql = "update user set phone = '$newphone', email = '$newemail' where user_id='$user_id'";
+      $row = $this->query($str_sql);
+      if($user_type == 'ordinary'){
+        return $row;
+      }
+      $community = $_SESSION['community'];
+      if($user_type == 'artisan' && $newcommunity != $_SESSION['community']){
+        $str_sql = "update artisan set community = '$newcommunity' where artisan_id = '$user_id'";
+        return $this->query($str_sql);
+      }
+    }
 
 }
 
 //$user = new User();
+//echo $user->createJob(210, "I need my car washed", "I live in a muddy area, so car easily gets dirty. You are gonna wipe out all the mud");
+
 //$details = $user->getUserDetails("tester4real", "tester123", "ordinary");
 //echo $details['fullname'];
 /*$login = $user->loginUser("salifu123", "mole123","artisan");
