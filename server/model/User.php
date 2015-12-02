@@ -34,10 +34,13 @@ class User extends adb{
 
 //user currently logged in gets his details
 function getUserDetailsBySession(){
-  $username = $_SESSION['username'];
-  $password = $_SESSION['password'];
-  $user_type = $_SESSION['user_type'];
-  return $this->getUserDetails($username, $password, $user_type);
+  if(isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SESSION['user_type'])){
+    $username = $_SESSION['username'];
+    $password = $_SESSION['password'];
+    $user_type = $_SESSION['user_type'];
+    return $this->getUserDetails($username, $password, $user_type);
+  }
+  return false;
 }
 
 //get details of a user based on username and password
@@ -86,15 +89,18 @@ function getUserDetailsBySession(){
   }
 
   function checkUser(){
-    $username = $_SESSION['username'];
-    $password = $_SESSION['password'];
-    $user_type = $_SESSION['user_type'];
-    $row = $this->getUserDetails($username, $password, $user_type);
-    if(!$row){
-      //redirect user to login page
+    if(isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SESSION['user_type'])){
+      $username = $_SESSION['username'];
+      $password = $_SESSION['password'];
+      $user_type = $_SESSION['user_type'];
+      $row = $this->getUserDetails($username, $password, $user_type);
+      if(!$row){
+        //redirect user to login page
+        return false;
+      }
+    }else{
       return false;
     }
-    //do nothing :: user is genuine
   }
 
   function becomeArtisan($username, $community){
@@ -136,10 +142,22 @@ function getUserDetailsBySession(){
      return $row;
   }
 
+  function createJob($starting_price, $summary, $description, $community){
+    $this->checkUser();
+    if(isset($_SESSION['user_id'])){
+      $assigner_id = $_SESSION['user_id'];
+      $str_sql = "insert into job(assigner_id, starting_price, summary, description, community) values ('$assigner_id',
+      '$starting_price', '$summary', '$description', '$community')";
+      return $this->query($str_sql);
+  }
+    return false;
+  }
 
 }
 
 //$user = new User();
+//echo $user->createJob(210, "I need my car washed", "I live in a muddy area, so car easily gets dirty. You are gonna wipe out all the mud");
+
 //$details = $user->getUserDetails("tester4real", "tester123", "ordinary");
 //echo $details['fullname'];
 /*$login = $user->loginUser("salifu123", "mole123","artisan");

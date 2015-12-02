@@ -45,7 +45,9 @@ switch ($cmd) {
   case 10:
     signOut();
     break;
-
+  case 11:
+    createJob();
+    break;
 
   default:
     echo '{"result": 0, "message": "Command unknown"}';
@@ -105,12 +107,12 @@ function checkSession(){
 }
 
 function signOut(){
-  include_once "../model/User.php";
-  $user = new User();
-  if($user->signOut()){
-    echo '{"result": 1, "You have successfully signed out"}';
+  if(session_destroy()){
+        echo '{"result":1,"message": "Logged out successfully"}';
+        return;
+    }
+    echo '{"result":0,"message": "Could not log you out, try again."}';
     return;
-  }
 }
 
 function getUserDetailsById(){
@@ -170,6 +172,21 @@ function getArtisansByCommunity(){
 function becomeArtisan(){
   include_once "../model/User.php";
   $user = new User();
+}
+
+function createJob(){
+  include_once "../model/User.php";
+  $user = new User();
+  $starting_price = $_REQUEST['starting_price'];
+  $summary = $_REQUEST['summary'];
+  $description = $_REQUEST['description'];
+  $community = $_REQUEST['community'];
+  if(!$user->createJob($starting_price, $summary, $description, $community)){
+    echo '{"result": 0, "message": "Could not add your job, try again"}';
+    return;
+  }
+  echo '{"result": 1, "message": "Your job has been added"}';
+  return;
 }
 
 

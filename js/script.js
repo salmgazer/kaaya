@@ -45,6 +45,10 @@ function doAdelay(){
  setTimeout(function(){return true;},30000);
 }
 
+//delay longer for next action
+function doLongdelay(){
+ setTimeout(function(){return true;},60000);
+}
 //submit event for signup form
 $(function(){
   $("#signup-form").submit(function(e){
@@ -72,6 +76,7 @@ $(function(){
   });
 });
 
+//event to signout user
 $(function(){
   $("#signout").click(function(e){
     e.preventDefault();
@@ -79,8 +84,17 @@ $(function(){
   })
 })
 
+//event to create job
+$(function(){
+  $("#createjob-form").submit(function(e){
+    e.preventDefault();
+    createJob();
+  })
+})
+
 
 function signUp(p1){
+  var signupstatus = document.getElementById('signupstatus');
   if(p1.length < 8){
     alert("password must be at least 8 characters long");
   }
@@ -101,13 +115,15 @@ function signUp(p1){
   }
 
   var strUrl = link+"1&fullname="+fullname+"&email="+email+"&username="+username+"&phone="+phone+"&password="+password;
-  alert(strUrl);
   var objResult = sendRequest(strUrl);
   if(objResult.result == 0){
-    alert("Signup was unsuccessful");
+    signupstatus.innerHTML = "Signup unsuccessful successful!";
+    signupstatus.style.color = "red";
     return;
   }
-  alert("Signup was successful");
+  signupstatus.innerHTML = "Signup was successful";
+  signupstatus.style.color = "green";
+  doLongdelay();
   window.location.href = "index.html";
 }
 
@@ -153,8 +169,45 @@ function getUserDetailsBySession(){
 function signOut(){
   var strUrl = link+"10";
   objResult = sendRequest(strUrl);
-  //doAdelay();
+  doAdelay();
   if(objResult.result == 1){
-    window.location.href = "index.html";
-  }  
+         window.location.href = "index.html";
+     return;
+     }
+    alert(objResult.message);
+}
+
+function createJob(){
+  var summary = $("#summary").val();
+  var starting_price = $("#starting_price").val();
+  var description = $("#description").val();
+  var community = $("#community").val();
+  var report = document.getElementById('jobadd-report');
+  //alert(summary); alert(starting_price); alert(description); alert(community);
+
+  if(summary.length < 20){
+    report.innerHTML = "Summary must be between 20 and 30 characters";
+    report.style.color = "red";
+    return;
+  }
+  if (starting_price <= 0) {
+    report.innerHTML = "Starting price can't be empty";
+    report.style.color = "red";
+    return;
+  }
+  if(community.length <= 3){
+    report.innerHTML = "Write full name of community";
+    report.style.color = "red";
+    return;
+  }
+  var strUrl = link+"11&summary="+summary+"&starting_price="+starting_price+"&description="+description+"&community="+community;
+  var objResult = sendRequest(strUrl);
+  if(objResult.result == 0){
+    report.innerHTML = "Sorry, could not add job.<br> Check internet and try again";
+    report.style.color = "red";
+    return;
+  }
+  report.innerHTML = "Your new job has been added";
+  report.style.color = "green";
+
 }
