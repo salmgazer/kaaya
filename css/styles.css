@@ -370,3 +370,7 @@ _:-ms-input-placeholder, :root .demo-graph {
 #addSkillBtn{
   margin-bottom: 30px;
 }
+
+.pink{
+  background-color: #FF504D;
+}
