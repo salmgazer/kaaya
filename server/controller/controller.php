@@ -51,6 +51,12 @@ switch ($cmd) {
   case 12:
     updateProfile();
     break;
+  case 13:
+    getArtisanSkills();
+    break;
+  case 14:
+    getProfileJobs();
+    break;
 
   default:
     echo '{"result": 0, "message": "Command unknown"}';
@@ -212,6 +218,26 @@ function updateProfile(){
   }
   echo '{"result": 1, "message": "Update was successful"}';
   return;
+}
+
+function getArtisanSkills(){
+  include_once "../model/User.php";
+  $user = new User();
+
+  $skills = $user->getArtisanSkills();
+  if(!$skills){
+    echo '{"result": 0, "message": "No skills"}';
+    return;
+  }
+  echo '{"result": 1, "skills": [';
+  while($skills){
+    echo json_encode($skills);
+    $skills = $user->fetch();
+    if($skills){
+      echo ",";
+    }
+  }
+  echo "]}";
 }
 
 

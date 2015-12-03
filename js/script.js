@@ -6,6 +6,7 @@ var phone = "";
 var email = "";
 var user_type = "";
 var community = "";
+var myskills = [];
 
 //sends request to Ajax page
 function sendRequest(u){
@@ -102,12 +103,11 @@ $(function(){
   });
 });
 
-//event to editing frofile
+//event to add skill
 $(function(){
-  $("#becomeArtisanBtn").click(function(e){
-    alert("yes");
-    //e.preventDefault();
-  //  becomeArtisan();
+  $("#add-skill-form").submit(function(e){
+    e.preventDefault();
+    addSkill();
   });
 });
 
@@ -251,6 +251,65 @@ function fillProfileForm(){
   if(user_type == "artisan"){
     document.getElementById('community').value = community;
   }
+  dressSkillsArea();
+}
+
+function dressSkillsArea(){
+  if(user_type == "ordinary"){
+    document.getElementById("jobs-area-nav").innerHTML = "Jobs Assigned";
+    document.getElementById("skills-area-nav").remove();
+    document.getElementById("lannisters-panel").remove();
+  }
+  if(user_type == "artisan")
+    getArtisanSkills();
+  getProfileJobs();
+}
+
+function getProfileJobs(){
+
+}
+
+function getArtisanSkills(){
+  var strUrl = link+"13";
+  var objResult = sendRequest(strUrl);
+
+  if(objResult.result == 0){
+    alert(" no skills");
+    return;
+  }
+  var skills = objResult.skills;
+  var skillsTable = document.getElementById('skillsTable');
+  for(var i = 0; i < skills.length; i++){
+    var skill_name = skills[i]['skill_name'];
+    myskills[i] = skill_name;
+    row=skillsTable.insertRow(1);
+    cell=row.insertCell(0);
+    cell.className = 'mdl-data-table__cell--non-numeric';
+    cell.innerHTML = "<td>"+skill_name+"</td>";
+  }
+}
+
+function addSkill(){
+  var newskill = $("#newskill").val();
+  if(newskill.length == 0){
+    return alert("skill can't be empty");
+  }
+  if(checkIfSkillExists(newskill, myskills)){
+    return alert(newskill+" exists");
+  }
+  //alert(newskill+" does not exist");
+  
+}
+
+function checkIfSkillExists(skill, skills){
+  var exists = false;
+  for(var i = 0; i < skills.length; i++){
+    if(skill.toUpperCase() == skills[i].toUpperCase()){
+      exists = true;
+      return exists;
+    }
+  }
+  return exists;
 }
 
 function updateProfile(){
@@ -268,7 +327,6 @@ function updateProfile(){
     return;
   }
     strUrl = link+"12&newphone="+newphone+"&newemail="+newemail+"&newcommunity="+newcommunity;
-    alert(strUrl);
     var objResult = sendRequest(strUrl);
     if(objResult.result == 0){
       form_report.innerHTML = "Update was unsuccessful.";

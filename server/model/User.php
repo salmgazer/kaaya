@@ -168,9 +168,25 @@ function getUserDetailsBySession(){
       }
     }
 
+    function getArtisanSkills(){
+      $artisan_id = $_SESSION['user_id'];
+      $str_sql = "select skill.skill_name from skill inner join artisan_has_skill on skill.skill_id = artisan_has_skill.skill_id where artisan_id='$artisan_id'";
+      $this->query($str_sql);
+      $row = $this->fetch();
+      if($row == null){
+        return false;
+      }
+      return $row;
+    }
+
 }
 
-//$user = new User();
+/*$user = new User();
+$skills = $user->getArtisanSkills();
+while($skills){
+  echo ($skills['skill_name']);
+  $skills = $user->fetch();
+}*/
 //echo $_SESSION['fullname'];
 //echo $user->createJob(210, "I need my car washed", "I live in a muddy area, so car easily gets dirty. You are gonna wipe out all the mud");
 
