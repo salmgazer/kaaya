@@ -225,7 +225,7 @@ function createJob(){
     report.style.color = "red";
     return;
   }
-  if(community.length <= 3){
+  if(community.length < 2){
     report.innerHTML = "Write full name of community";
     report.style.color = "red";
     return;
@@ -369,4 +369,40 @@ function becomeArtisan(){
   form_report.style.color = "green";
   doLongdelay();
   window.location.href = "profile.html";
+}
+
+function getNewJobs(){
+  var strUrl = link+"16";
+  var objResult = sendRequest(strUrl);
+  if(objResult.result == 0){
+    return alert(" no jobs for you");
+  }
+  //populate jobs area here
+  var jobs = objResult.jobs;
+  var freshjobs = "";
+  var current_jobs = document.getElementById("current-jobs-area");
+  for(var i = 0; i < jobs.length; i++){
+    singleTask = '<div class="demo-updates mdl-shadow--2dp mdl-cell mdl-color--white mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-desktop "><div class="mdl-grid"><div class="mdl-cell mdl-cell--12-col"><p>'+jobs[i]['summary']+'</p></div></div><div class="mdl-grid mdl-card__supporting-text mdl-color-text--orange-600" style="margin-top: -25px;"><div class="mdl-cell mdl-cell--12-col"><b class="jobtag deep-blue-text mdl-cell mdl-cell--6-col">'+jobs[i]['skill_required']+'</b><b class=" mdl-cell mdl-cell--6-col price">₵'+jobs[i]['starting_price']+'</b></div></div><div class="mdl-grid mdl-card__actions mdl-card--border mdl-color-text--grey-600"><div class="mdl-grid mdl-cell--12-col"><div class="mdl-cell mdl-cell--8-col"><p style="text-align: left;">Posted: '+jobs[i]['skill_required']+'</p></div><div class="mdl-cell mdl-cell--4-col"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect applybtn" onclick="applyForJob('+jobs['job_id']+')"><b>Apply</b></button></div></div></div></div>';
+    freshjobs += singleTask;
+  }
+  current_jobs.innerHTML = freshjobs;
+}
+
+function getOpenAssignedJobs(){
+
+}
+
+function getAllJobs(){
+  var strUrl = link+"17";
+  var objResult = sendRequest(strUrl);
+
+  var jobs = objResult.jobs;
+  var freshjobs = "";
+  var all_jobs = document.getElementById("all-jobs-area");
+
+  for(var i = 0; i < jobs.length; i++){
+    singleTask = '<div class="demo-updates mdl-shadow--2dp mdl-cell mdl-color--white mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-desktop "><div class="mdl-grid"><div class="mdl-cell mdl-cell--12-col"><p>'+jobs[i]['summary']+'</p></div></div><div class="mdl-grid mdl-card__supporting-text mdl-color-text--orange-600" style="margin-top: -25px;"><div class="mdl-cell mdl-cell--12-col"><b class="jobtag deep-blue-text mdl-cell mdl-cell--6-col">'+jobs[i]['skill_required']+'</b><b class=" mdl-cell mdl-cell--6-col price">₵'+jobs[i]['starting_price']+'</b></div></div><div class="mdl-grid mdl-card__actions mdl-card--border mdl-color-text--grey-600"><div class="mdl-grid mdl-cell--12-col"><div class="mdl-cell mdl-cell--8-col"><p style="text-align: left;">Posted: '+jobs[i]['skill_required']+'</p></div><div class="mdl-cell mdl-cell--4-col"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect applybtn" onclick="applyForJob('+jobs['job_id']+')"><b>Apply</b></button></div></div></div></div>';
+    freshjobs += singleTask;
+  }
+  all_jobs.innerHTML = freshjobs;
 }

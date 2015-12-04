@@ -208,6 +208,48 @@ function getUserDetailsBySession(){
       return $this->query($str_sql);
     }
 
+    function getCompletedJobs(){
+      $this->checkUser();
+      $artisan_id = $_SESSION['user_id'];
+      $str_sql = "select * from job inner join user_has_job on job.job_id = user_has_job.job_id where user_has_job.artisan_id = '$artisan_id'";
+      $this->query($str_sql);
+      $jobs = $this->fetch();
+      if($jobs == null){
+        return false;
+      }
+      return $jobs;
+    }
+
+    function getNewJobs(){
+      $this->checkUser();
+      $artisan_id = $_SESSION['user_id'];
+      $community = $_SESSION['community'];
+
+      $str_sql = "select job.job_id, job.skill_required, job.summary, job.date_added, job.starting_price from
+      job inner join skill on job.skill_required like skill.skill_name inner join artisan_has_skill
+      on artisan_has_skill.skill_id = skill.skill_id inner join user on user.user_id = artisan_has_skill.artisan_id where
+      user.user_id = '$artisan_id' AND job.community like '$community'";
+
+      $this->query($str_sql);
+      $jobs = $this->fetch();
+      if($jobs == null){
+        return false;
+      }
+      return $jobs;
+    }
+
+    function getAllJobs(){
+      $this->checkUser();
+      $str_sql = "select job_id, skill_required, starting_price, date_added, summary from job where job_status = 'open'";
+      $this->query($str_sql);
+      $jobs = $this->fetch();
+
+      if(!$jobs){
+        return false;
+      }
+      return $jobs;
+    }
+
 }
 
 /*$user = new User();

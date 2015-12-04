@@ -60,6 +60,12 @@ switch ($cmd) {
   case 15:
     addSkill();
     break;
+  case 16:
+    getNewJobs();
+    break;
+  case 17;
+    getAllJobs();
+    break;
 
   default:
     echo '{"result": 0, "message": "Command unknown"}';
@@ -255,6 +261,46 @@ function addSkill(){
   }
   echo '{"result": 1, "message": "New skill has been added"}';
   return;
+}
+
+function getNewJobs(){
+  include_once "../model/User.php";
+  $user = new User();
+
+  $jobs = $user->getNewJobs();
+  if(!$jobs){
+    echo '{"result": 0, "message": "No jobs for you, try viewing through all jobs"}';
+    return;
+  }
+  echo '{"result": 1, "jobs": [';
+  while($jobs){
+    echo json_encode($jobs);
+    $jobs = $user->fetch();
+    if($jobs){
+      echo ",";
+    }
+  }
+  echo "]}";
+}
+
+function getAllJobs(){
+  include_once "../model/User.php";
+  $user = new User();
+
+  $jobs = $user->getAllJobs();
+  if(!$jobs){
+    echo '{"result": 0, "message": "No jobs for you, try viewing through all jobs"}';
+    return;
+  }
+  echo '{"result": 1, "jobs": [';
+  while($jobs){
+    echo json_encode($jobs);
+    $jobs = $user->fetch();
+    if($jobs){
+      echo ",";
+    }
+  }
+  echo "]}";
 }
 
 
