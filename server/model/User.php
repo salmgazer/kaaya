@@ -95,6 +95,7 @@ function getUserDetailsBySession(){
       $row = $this->getUserDetails($username, $password, $user_type);
       if(!$row){
         //redirect user to login page
+        //header("location ./");
         return false;
       }
     }else{
@@ -169,6 +170,7 @@ function getUserDetailsBySession(){
     }
 
     function getArtisanSkills(){
+      $this->checkUser();
       $artisan_id = $_SESSION['user_id'];
       $str_sql = "select skill.skill_name from skill inner join artisan_has_skill on skill.skill_id = artisan_has_skill.skill_id where artisan_id='$artisan_id'";
       $this->query($str_sql);
@@ -177,6 +179,33 @@ function getUserDetailsBySession(){
         return false;
       }
       return $row;
+    }
+
+    function addSkill($skill_name){
+      $this->checkUser();
+      $artisan_id = $_SESSION['user_id'];
+      $str_sql = "select skill_id from skill where skill_name = '$skill_name' limit 0,1";
+      $this->query($str_sql);
+      $theskill = $this->fetch();
+      //if skill does not exist in database already
+      if($theskill == null){
+        $str_sql = "insert into skill(skill_name) values ('$skill_name')";
+        if($this->query($str_sql)){
+          $str_sql = "select skill_id from skill where skill_name = '$skill_name'";
+          $this->query($str_sql);
+          $skill_id = $this->fetch();
+          if($skill_id == null){
+            return false;
+          }
+          $myskill_id = $skill_id['skill_id'];
+          $str_sql = "insert into artisan_has_skill (artisan_id, skill_id) values ('$artisan_id', $myskill_id)";
+          return $this->query($str_sql);
+        }
+      }
+      //if skill exists already
+      $myskill_id = $theskill['skill_id'];
+      $str_sql = "insert into artisan_has_skill (artisan_id, skill_id) values ('$artisan_id', $myskill_id)";
+      return $this->query($str_sql);
     }
 
 }

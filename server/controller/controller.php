@@ -57,6 +57,9 @@ switch ($cmd) {
   case 14:
     getProfileJobs();
     break;
+  case 15:
+    addSkill();
+    break;
 
   default:
     echo '{"result": 0, "message": "Command unknown"}';
@@ -238,6 +241,19 @@ function getArtisanSkills(){
     }
   }
   echo "]}";
+}
+
+function addSkill(){
+  include_once "../model/User.php";
+  $user = new User();
+
+  $skill_name = $_REQUEST['skill_name'];
+  if(!$user->addSkill($skill_name)){
+    echo '{"result: 0", "message": "Could not add new skill. try again"}';
+    return;
+  }
+  echo '{"result": 1, "message": "New skill has been added"}';
+  return;
 }
 
 

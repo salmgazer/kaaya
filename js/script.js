@@ -290,7 +290,7 @@ function getArtisanSkills(){
 }
 
 function addSkill(){
-  var newskill = $("#newskill").val();
+  var newskill = $("#newskill").val().toLowerCase();
   if(newskill.length == 0){
     return alert("skill can't be empty");
   }
@@ -298,7 +298,19 @@ function addSkill(){
     return alert(newskill+" exists");
   }
   //alert(newskill+" does not exist");
-  
+  var strUrl = link+"15&skill_name="+newskill;
+  var objResult = sendRequest(strUrl);
+  if(objResult.result == 0){
+    alert(objResult.message);
+    return;
+  }
+  //successfully added skill to database - add to table in
+  myskills[myskills.length] = newskill;
+  var skillsTable = document.getElementById('skillsTable');
+  row=skillsTable.insertRow(1);
+  cell=row.insertCell(0);
+  cell.className = 'mdl-data-table__cell--non-numeric';
+  cell.innerHTML = "<td>"+newskill+"</td>";
 }
 
 function checkIfSkillExists(skill, skills){
