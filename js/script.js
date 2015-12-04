@@ -205,11 +205,18 @@ function createJob(){
   var starting_price = $("#starting_price").val();
   var description = $("#description").val();
   var community = $("#community").val();
+  var required_skill = $("#skill_required").val();
   var report = document.getElementById('jobadd-report');
+
   //alert(summary); alert(starting_price); alert(description); alert(community);
 
-  if(summary.length < 20){
+  if(summary.length < 10){
     report.innerHTML = "Summary must be between 20 and 30 characters";
+    report.style.color = "red";
+    return;
+  }
+  if(required_skill.length < 3){
+    report.innerHTML = "Enter the main skill required";
     report.style.color = "red";
     return;
   }
@@ -223,7 +230,7 @@ function createJob(){
     report.style.color = "red";
     return;
   }
-  var strUrl = link+"11&summary="+summary+"&starting_price="+starting_price+"&description="+description+"&community="+community;
+  var strUrl = link+"11&summary="+summary+"&starting_price="+starting_price+"&description="+description+"&community="+community+"&skill_required="+required_skill;
   var objResult = sendRequest(strUrl);
   if(objResult.result == 0){
     report.innerHTML = "Sorry, could not add job.<br> Check internet and try again";

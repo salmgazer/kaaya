@@ -140,12 +140,12 @@ function getUserDetailsBySession(){
      return $row;
   }
 
-  function createJob($starting_price, $summary, $description, $community){
+  function createJob($starting_price, $summary, $description, $community, $skill_required){
     $this->checkUser();
     if(isset($_SESSION['user_id'])){
       $assigner_id = $_SESSION['user_id'];
-      $str_sql = "insert into job(assigner_id, starting_price, summary, description, community) values ('$assigner_id',
-      '$starting_price', '$summary', '$description', '$community')";
+      $str_sql = "insert into job(assigner_id, starting_price, summary, description, community, skill_required) values ('$assigner_id',
+      '$starting_price', '$summary', '$description', '$community', '$skill_required')";
       return $this->query($str_sql);
   }
     return false;

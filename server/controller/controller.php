@@ -199,7 +199,8 @@ function createJob(){
   $summary = $_REQUEST['summary'];
   $description = $_REQUEST['description'];
   $community = $_REQUEST['community'];
-  if(!$user->createJob($starting_price, $summary, $description, $community)){
+  $skill_required = $_REQUEST['skill_required'];
+  if(!$user->createJob($starting_price, $summary, $description, $community, $skill_required)){
     echo '{"result": 0, "message": "Could not add your job, try again"}';
     return;
   }
