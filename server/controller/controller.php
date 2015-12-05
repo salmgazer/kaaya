@@ -51,6 +51,24 @@ switch ($cmd) {
   case 12:
     updateProfile();
     break;
+  case 13:
+    getArtisanSkills();
+    break;
+  case 14:
+    getProfileJobs();
+    break;
+  case 15:
+    addSkill();
+    break;
+  case 16:
+    getNewJobs();
+    break;
+  case 17:
+    getAllJobs();
+    break;
+  case 18:
+    applyForJob();
+    break;
 
   default:
     echo '{"result": 0, "message": "Command unknown"}';
@@ -175,6 +193,12 @@ function getArtisansByCommunity(){
 function becomeArtisan(){
   include_once "../model/User.php";
   $user = new User();
+  if(!$user->becomeArtisan()){
+    echo '{"result": 0, "message": "unsuccessful, try again. Check internet"}';
+    return;
+  }
+  echo '{"result": 1, "message": "You are now an artisan!"}';
+  return;
 }
 
 function createJob(){
@@ -184,7 +208,8 @@ function createJob(){
   $summary = $_REQUEST['summary'];
   $description = $_REQUEST['description'];
   $community = $_REQUEST['community'];
-  if(!$user->createJob($starting_price, $summary, $description, $community)){
+  $skill_required = $_REQUEST['skill_required'];
+  if(!$user->createJob($starting_price, $summary, $description, $community, $skill_required)){
     echo '{"result": 0, "message": "Could not add your job, try again"}';
     return;
   }
@@ -205,6 +230,92 @@ function updateProfile(){
     return;
   }
   echo '{"result": 1, "message": "Update was successful"}';
+  return;
+}
+
+function getArtisanSkills(){
+  include_once "../model/User.php";
+  $user = new User();
+
+  $skills = $user->getArtisanSkills();
+  if(!$skills){
+    echo '{"result": 0, "message": "No skills"}';
+    return;
+  }
+  echo '{"result": 1, "skills": [';
+  while($skills){
+    echo json_encode($skills);
+    $skills = $user->fetch();
+    if($skills){
+      echo ",";
+    }
+  }
+  echo "]}";
+}
+
+function addSkill(){
+  include_once "../model/User.php";
+  $user = new User();
+
+  $skill_name = $_REQUEST['skill_name'];
+  if(!$user->addSkill($skill_name)){
+    echo '{"result: 0", "message": "Could not add new skill. try again"}';
+    return;
+  }
+  echo '{"result": 1, "message": "New skill has been added"}';
+  return;
+}
+
+function getNewJobs(){
+  include_once "../model/User.php";
+  $user = new User();
+
+  $jobs = $user->getNewJobs();
+  if(!$jobs){
+    echo '{"result": 0, "message": "No jobs for you, try viewing through all jobs"}';
+    return;
+  }
+  echo '{"result": 1, "jobs": [';
+  while($jobs){
+    echo json_encode($jobs);
+    $jobs = $user->fetch();
+    if($jobs){
+      echo ",";
+    }
+  }
+  echo "]}";
+}
+
+function getAllJobs(){
+  include_once "../model/User.php";
+  $user = new User();
+
+  $jobs = $user->getAllJobs();
+  if(!$jobs){
+    echo '{"result": 0, "message": "No jobs for you, try viewing through all jobs"}';
+    return;
+  }
+  echo '{"result": 1, "jobs": [';
+  while($jobs){
+    echo json_encode($jobs);
+    $jobs = $user->fetch();
+    if($jobs){
+      echo ",";
+    }
+  }
+  echo "]}";
+}
+
+function applyForJob(){
+  include_once "../model/User.php";
+  $user = new User();
+
+  $job_id = $_REQUEST['job_id'];
+  if(!$user->applyForJob($job_id)){
+    echo '{"result": 0, "message": "You application failed"}';
+    return;
+  }
+  echo '{"result": 1, "message": "You have successfully applied for this job"}';
   return;
 }
 

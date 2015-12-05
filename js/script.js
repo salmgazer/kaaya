@@ -6,6 +6,7 @@ var phone = "";
 var email = "";
 var user_type = "";
 var community = "";
+var myskills = [];
 
 //sends request to Ajax page
 function sendRequest(u){
@@ -83,24 +84,33 @@ $(function(){
   $("#signout").click(function(e){
     e.preventDefault();
     signOut();
-  })
-})
+  });
+});
 
 //event to create job
 $(function(){
   $("#createjob-form").submit(function(e){
     e.preventDefault();
     createJob();
-  })
-})
+  });
+});
 
 //event to editing frofile
 $(function(){
   $("#profile-form").submit(function(e){
     e.preventDefault();
     updateProfile();
-  })
-})
+  });
+});
+
+//event to add skill
+$(function(){
+  $("#add-skill-form").submit(function(e){
+    e.preventDefault();
+    addSkill();
+  });
+});
+
 
 
 function signUp(p1){
@@ -175,7 +185,7 @@ function getUserDetailsBySession(){
     community = mydetails['community'];
 //pimp with details
   document.getElementById('myfullname').innerHTML = fullname;
-  document.getElementById('dp-area').innerHTML = '<img src="images/"'+photo+' class="demo-avatar centered">';
+//  document.getElementById('dp-area').innerHTML = '<img src="images/"'+photo+' class="demo-avatar centered">';
   //alert(objResult.user[0]['fullname']);
 }
 
@@ -195,11 +205,18 @@ function createJob(){
   var starting_price = $("#starting_price").val();
   var description = $("#description").val();
   var community = $("#community").val();
+  var required_skill = $("#skill_required").val();
   var report = document.getElementById('jobadd-report');
+
   //alert(summary); alert(starting_price); alert(description); alert(community);
 
-  if(summary.length < 20){
+  if(summary.length < 10){
     report.innerHTML = "Summary must be between 20 and 30 characters";
+    report.style.color = "red";
+    return;
+  }
+  if(required_skill.length < 3){
+    report.innerHTML = "Enter the main skill required";
     report.style.color = "red";
     return;
   }
@@ -208,12 +225,12 @@ function createJob(){
     report.style.color = "red";
     return;
   }
-  if(community.length <= 3){
+  if(community.length < 2){
     report.innerHTML = "Write full name of community";
     report.style.color = "red";
     return;
   }
-  var strUrl = link+"11&summary="+summary+"&starting_price="+starting_price+"&description="+description+"&community="+community;
+  var strUrl = link+"11&summary="+summary+"&starting_price="+starting_price+"&description="+description+"&community="+community+"&skill_required="+required_skill;
   var objResult = sendRequest(strUrl);
   if(objResult.result == 0){
     report.innerHTML = "Sorry, could not add job.<br> Check internet and try again";
@@ -233,7 +250,7 @@ function fillProfileForm(){
     document.getElementById('community-area').innerHTML = "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo'><input class='mdl-textfield__input' type='text' id='community' value='Nima'/><label class='mdl-textfield__label' for='community'><i class='fa fa-users'></i> community</label></div>";
   }
   else{
-    document.getElementById('artisanBtn').innerHTML = "<button class='becomeArtisanBtn mdl-button mdl-js-button mdl-js-ripple-effect whiten mdl-button--raised deep-blue-text centered' id='becomeArtisanBtn'>Become An Artisan</button>";
+    document.getElementById('artisanBtn').innerHTML = '<button class="becomeArtisanBtn mdl-button mdl-js-button mdl-js-ripple-effect whiten mdl-button--raised deep-blue-text centered" onclick="becomeArtisan()">Become An Artisan</button>';
   }
 
   document.getElementById('phone').value = phone;
@@ -241,6 +258,77 @@ function fillProfileForm(){
   if(user_type == "artisan"){
     document.getElementById('community').value = community;
   }
+  dressSkillsArea();
+}
+
+function dressSkillsArea(){
+  if(user_type == "ordinary"){
+    document.getElementById("jobs-area-nav").innerHTML = "Jobs Assigned";
+    document.getElementById("skills-area-nav").remove();
+    document.getElementById("lannisters-panel").remove();
+  }
+  if(user_type == "artisan")
+    getArtisanSkills();
+  getProfileJobs();
+}
+
+function getProfileJobs(){
+
+}
+
+function getArtisanSkills(){
+  var strUrl = link+"13";
+  var objResult = sendRequest(strUrl);
+
+  if(objResult.result == 0){
+    alert(" no skills");
+    return;
+  }
+  var skills = objResult.skills;
+  var skillsTable = document.getElementById('skillsTable');
+  for(var i = 0; i < skills.length; i++){
+    var skill_name = skills[i]['skill_name'];
+    myskills[i] = skill_name;
+    row=skillsTable.insertRow(1);
+    cell=row.insertCell(0);
+    cell.className = 'mdl-data-table__cell--non-numeric';
+    cell.innerHTML = "<td>"+skill_name+"</td>";
+  }
+}
+
+function addSkill(){
+  var newskill = $("#newskill").val().toLowerCase();
+  if(newskill.length == 0){
+    return alert("skill can't be empty");
+  }
+  if(checkIfSkillExists(newskill, myskills)){
+    return alert(newskill+" exists");
+  }
+  //alert(newskill+" does not exist");
+  var strUrl = link+"15&skill_name="+newskill;
+  var objResult = sendRequest(strUrl);
+  if(objResult.result == 0){
+    alert(objResult.message);
+    return;
+  }
+  //successfully added skill to database - add to table in
+  myskills[myskills.length] = newskill;
+  var skillsTable = document.getElementById('skillsTable');
+  row=skillsTable.insertRow(1);
+  cell=row.insertCell(0);
+  cell.className = 'mdl-data-table__cell--non-numeric';
+  cell.innerHTML = "<td>"+newskill+"</td>";
+}
+
+function checkIfSkillExists(skill, skills){
+  var exists = false;
+  for(var i = 0; i < skills.length; i++){
+    if(skill.toUpperCase() == skills[i].toUpperCase()){
+      exists = true;
+      return exists;
+    }
+  }
+  return exists;
 }
 
 function updateProfile(){
@@ -258,7 +346,6 @@ function updateProfile(){
     return;
   }
     strUrl = link+"12&newphone="+newphone+"&newemail="+newemail+"&newcommunity="+newcommunity;
-    alert(strUrl);
     var objResult = sendRequest(strUrl);
     if(objResult.result == 0){
       form_report.innerHTML = "Update was unsuccessful.";
@@ -267,4 +354,82 @@ function updateProfile(){
     }
     form_report.innerHTML = "Profile update was successful";
     form_report.style.color = "green";
+}
+
+function becomeArtisan(){
+  var form_report = document.getElementById('myprofileFormReport');
+  var strUrl = link+"8";
+  var objResult = sendRequest(strUrl);
+  form_report.innerHTML = objResult.message;
+  if(objResult.result == 0){
+    form_report.style.color = "red";
+    return;
+  }
+  document.getElementById('artisanBtn').innerHTML = "";
+  form_report.style.color = "green";
+  doLongdelay();
+  window.location.href = "profile.html";
+}
+
+function getNewJobs(){
+  var strUrl = link+"16";
+  var objResult = sendRequest(strUrl);
+  if(objResult.result == 0){
+    return alert(" no jobs for you");
+  }
+  //populate jobs area here
+  var jobs = objResult.jobs;
+  var freshjobs = "";
+  var current_jobs = document.getElementById("current-jobs-area");
+  var current_job_id = jobs[0]['job_id'];
+  for(var i = 0; i < jobs.length; i++){
+    if(i > 0 && jobs[i]['job_id'] != current_job_id){
+      singleTask = '<div class="demo-updates mdl-shadow--2dp mdl-cell mdl-color--white mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-desktop "><div class="mdl-grid"><div class="mdl-cell mdl-cell--12-col"><p>'+jobs[i]['summary']+'</p></div></div><div class="mdl-grid mdl-card__supporting-text mdl-color-text--orange-600" style="margin-top: -25px;"><div class="mdl-cell mdl-cell--12-col"><b class="jobtag deep-blue-text mdl-cell mdl-cell--6-col">'+jobs[i]['skill_required']+'</b><b class=" mdl-cell mdl-cell--6-col price">₵'+jobs[i]['starting_price']+'</b></div></div><div class="mdl-grid mdl-card__actions mdl-card--border mdl-color-text--grey-600"><div class="mdl-grid mdl-cell--12-col"><div class="mdl-cell mdl-cell--8-col"><p style="text-align: left;">Posted: '+jobs[i]['job_applicaton_status']+'</p></div><div class="mdl-cell mdl-cell--4-col"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect applybtn apply-btn'+jobs[i]['job_id']+'" onclick="applyForJob('+jobs[i]['job_id']+')" id="apply-btn'+jobs[i]['job_id']+'"><b>Apply</b></button></div></div></div></div>';
+      freshjobs += singleTask;
+      current_job_id = jobs[i]['job_id'];
+    }
+  }
+  current_jobs.innerHTML = freshjobs;
+}
+
+function getOpenAssignedJobs(){
+
+}
+
+function getAllJobs(){
+  var strUrl = link+"17";
+  var objResult = sendRequest(strUrl);
+
+  var jobs = objResult.jobs;
+  var freshjobs = "";
+  var all_jobs = document.getElementById("all-jobs-area");
+  var singleTask = "";
+  for(var i = 0; i < jobs.length; i++){
+    //alert(jobs[i]['job_application_status']);
+    if(jobs[i]['job_application_status'] == 'applied'){
+        singleTask = '<div class="demo-updates mdl-shadow--2dp mdl-cell mdl-color--white mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-desktop "><div class="mdl-grid"><div class="mdl-cell mdl-cell--12-col"><p>'+jobs[i]['summary']+'</p></div></div><div class="mdl-grid mdl-card__supporting-text mdl-color-text--orange-600" style="margin-top: -25px;"><div class="mdl-cell mdl-cell--12-col"><b class="jobtag deep-blue-text mdl-cell mdl-cell--6-col">'+jobs[i]['skill_required']+'</b><b class=" mdl-cell mdl-cell--6-col price">₵'+jobs[i]['starting_price']+'</b></div></div><div class="mdl-grid mdl-card__actions mdl-card--border mdl-color-text--grey-600"><div class="mdl-grid mdl-cell--12-col"><div class="mdl-cell mdl-cell--8-col"><p style="text-align: left;">Posted: '+jobs[i]['date_added']+'</p></div><div class="mdl-cell mdl-cell--4-col"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect applybtn apply-btn'+jobs[i]['job_id']+'" onclick="applyForJob('+jobs[i]['job_id']+')" id="apply-btn'+jobs[i]['job_id']+'" disabled><b>Apply</b></button></div></div></div></div>';
+
+      }
+    else {
+      singleTask = '<div class="demo-updates mdl-shadow--2dp mdl-cell mdl-color--white mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-desktop "><div class="mdl-grid"><div class="mdl-cell mdl-cell--12-col"><p>'+jobs[i]['summary']+'</p></div></div><div class="mdl-grid mdl-card__supporting-text mdl-color-text--orange-600" style="margin-top: -25px;"><div class="mdl-cell mdl-cell--12-col"><b class="jobtag deep-blue-text mdl-cell mdl-cell--6-col">'+jobs[i]['skill_required']+'</b><b class=" mdl-cell mdl-cell--6-col price">₵'+jobs[i]['starting_price']+'</b></div></div><div class="mdl-grid mdl-card__actions mdl-card--border mdl-color-text--grey-600"><div class="mdl-grid mdl-cell--12-col"><div class="mdl-cell mdl-cell--8-col"><p style="text-align: left;">Posted: '+jobs[i]['date_added']+'</p></div><div class="mdl-cell mdl-cell--4-col"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect applybtn apply-btn'+jobs[i]['job_id']+'" onclick="applyForJob('+jobs[i]['job_id']+')" id="apply-btn'+jobs[i]['job_id']+'"><b>Apply</b></button></div></div></div></div>';
+      freshjobs += singleTask;
+    }
+    freshjobs += singleTask;
+  }
+  all_jobs.innerHTML = freshjobs;
+}
+
+function applyForJob(job_id){
+  var strUrl = link+"18&job_id="+job_id;
+  var objResult = sendRequest(strUrl);
+
+  if(objResult.result == 0){
+    alert(objResult.message);
+    return;
+  }
+  var applyBtn = document.getElementsByClassName('apply-btn'+job_id);
+  applyBtn.innerHTML = "<i>Applied</i>";
+  applyBtn.style.color = "red";
+  applyBtn.disabled = true;
+
 }

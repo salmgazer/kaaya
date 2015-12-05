@@ -32,7 +32,7 @@
     <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
       <header class="demo-header mdl-layout__header mdl-color-text--grey-600 deep-blue">
         <div class="mdl-layout__header-row">
-          <span class="mdl-layout-title white-text">Home</span>
+          <span class="mdl-layout-title white-text">Kaaya</span>
           <div class="mdl-layout-spacer"></div>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
             <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
@@ -55,136 +55,84 @@
       </header>
       <div class="demo-drawer mdl-layout__drawer body-blue mdl-color-text--white">
         <header class="demo-drawer-header">
-          <div id="dp-area">
-          </div>
+            <i class="fa fa-user fa-4x white-text centered"></i>
           <h5 class="usernamearea" id="myfullname"></h5>
         </header>
         <hr style="height: 0.3px;" class="blue-white-text">
         <nav class="demo-navigation mdl-navigation body-blue">
           <a class="mdl-navigation__link mdl-js-ripple-effect" href="home.html"><i class="fa fa-home fa-2x"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Home</a>
           <a class="mdl-navigation__link" href="profile.html"><i class="fa fa-user fa-2x"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;My Profile</a>
-          <a class="mdl-navigation__link" href="jobs.html"><i class="fa fa-search fa-2x"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Find Jobs</a>
           <a class="mdl-navigation__link" href="artisans.html"><i class="fa fa-users fa-2x"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Artisans</a>
           <a class="mdl-navigation__link" href="createJob.html"><i class="fa fa-plus-circle fa-2x"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create Job</a>
           <a onclick="signOut()" class="mdl-navigation__link" href="" id="signout"><i class="fa fa-power-off fa-2x"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sign out</a>
         </nav>
       </div>
       <main class="mdl-layout__content mdl-color--grey-10 light-blue">
-        <div class="mdl-grid demo-content">
+        <div class="mdl-cell mdl-cell--12-col">
+        <div class="mdl-grid mdl-cell--12-col demo-content">
 
-            <div class="demo-updates mdl-shadow--2dp mdl-cell mdl-color--white mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-desktop ">
-              <div class="mdl-grid">
-                <div class="mdl-cell mdl-cell--12-col">
-                  <p>Replace my table legs with mahogany.</p>
-                </div>
-              </div>
-              <div class="mdl-grid mdl-card__supporting-text mdl-color-text--orange-600" style="margin-top: -25px;">
-                <div class="mdl-cell mdl-cell--12-col">
-                <b class="jobtag deep-blue-text mdl-cell mdl-cell--7-col">Carpentry</b>
-                <b class=" mdl-cell mdl-cell--5-col price">₵300</b>
-              </div>
-              </div>
-              <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color-text--grey-600">
-                <div class="mdl-grid mdl-cell--12-col">
-                  <div class="mdl-cell mdl-cell--8-col">
-                <p style="text-align: left;">Posted: 12th March, 2015</p>
-              </div>
-                <div class="mdl-cell mdl-cell--4-col">
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect applybtn">
-                  <b>Apply</b>
-                </button>
-              </div>
+          <div class="mdl-cell mdl-cell--8-col">
+            <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+            <div class="mdl-tabs__tab-bar">
+                <a href="#starks-panel" class="mdl-tabs__tab is-active">My Jobs</a>
+                <!--<a href="#lannisters-panel" class="mdl-tabs__tab">Jobs Applied</a>-->
+                <a href="#targaryens-panel" class="mdl-tabs__tab">All Jobs</a>
+            </div>
+
+            <div class="mdl-tabs__panel is-active" id="starks-panel">
+              <div class="mdl-grid" id="current-jobs-area">
             </div>
             </div>
-          </div>
-
-            <div class="demo-updates mdl-shadow--2dp mdl-cell mdl-color--white mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-desktop ">
-              <div class="mdl-grid">
-                <div class="mdl-cell mdl-cell--12-col">
-                  <p>Get me some vegetables from Kaneshi market.</p>
-                </div>
+            <!--<div class="mdl-tabs__panel" id="lannisters-panel">
+              <div class="mdl-grid" id="applied-to">
+            </div>
+          </div>-->
+            <div class="mdl-tabs__panel" id="targaryens-panel">
+              <!--<form action="#">
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input centered" type="text" id="search_entry">
+                <label class="mdl-textfield__label" for="search_entry">Search here</label>
               </div>
-              <div class="mdl-grid mdl-card__supporting-text mdl-color-text--orange-600" style="margin-top: -25px;">
-                <div class="mdl-cell mdl-cell--12-col">
-                <b class="jobtag deep-blue-text mdl-cell mdl-cell--7-col">Groceries</b>
-                <b class=" mdl-cell mdl-cell--5-col price">₵150</b>
-              </div>
-              </div>
-              <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color-text--grey-600">
-                <div class="mdl-grid mdl-cell--12-col">
-                  <div class="mdl-cell mdl-cell--8-col">
-                <p style="text-align: left;">Posted: 12th March, 2015</p>
-              </div>
-                <div class="mdl-cell mdl-cell--4-col">
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect applybtn">
-                  <b>Apply</b>
-                </button>
-              </div>
+            </form>-->
+              <div class="mdl-grid" id="all-jobs-area">
             </div>
             </div>
           </div>
 
-          <div class="demo-updates mdl-shadow--2dp mdl-cell mdl-color--white mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-desktop ">
-            <div class="mdl-grid">
-              <div class="mdl-cell mdl-cell--12-col">
-                <p>Bath my dogs (3 bulldogs)</p>
-              </div>
-            </div>
-            <div class="mdl-grid mdl-card__supporting-text mdl-color-text--orange-600" style="margin-top: -25px;">
-              <div class="mdl-cell mdl-cell--12-col">
-              <b class="jobtag deep-blue-text mdl-cell mdl-cell--7-col">Verterinary</b>
-              <b class=" mdl-cell mdl-cell--5-col price">₵250</b>
-            </div>
-            </div>
-            <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color-text--grey-600">
-              <div class="mdl-grid mdl-cell--12-col">
-                <div class="mdl-cell mdl-cell--8-col">
-              <p style="text-align: left;">Posted: 12th March, 2015</p>
-            </div>
-              <div class="mdl-cell mdl-cell--4-col">
-              <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect applybtn">
-                <b>Apply</b>
-              </button>
-            </div>
-          </div>
-          </div>
+
+      </div>
+
+      <div class="mdl-grid mdl-cell mdl-cell--4-col">
+        <div class="adsample">
+          <img class="mdl-cell mdl-cell--10-col" src="images/sidead1.jpg" onclick="alert('clicked')">
+          <div class="adpad">
+          <b class="deep-blue-text">Our ad title here</b><br>
+          A short summary about this ad.
         </div>
-
-        <div class="demo-updates mdl-shadow--2dp mdl-cell mdl-color--white mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-desktop ">
-          <div class="mdl-grid">
-            <div class="mdl-cell mdl-cell--12-col">
-              <p>Replace my car wheels (Tico), all four</p>
-            </div>
-          </div>
-          <div class="mdl-grid mdl-card__supporting-text mdl-color-text--orange-600" style="margin-top: -25px;">
-            <div class="mdl-cell mdl-cell--12-col">
-            <b class="jobtag deep-blue-text mdl-cell mdl-cell--7-col">Carpentry</b>
-            <b class=" mdl-cell mdl-cell--5-col price">₵750</b>
-          </div>
-          </div>
-          <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color-text--grey-600">
-            <div class="mdl-grid mdl-cell--12-col">
-              <div class="mdl-cell mdl-cell--8-col">
-            <p style="text-align: left;">Posted: 12th March, 2015</p>
-          </div>
-            <div class="mdl-cell mdl-cell--4-col">
-            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect applybtn">
-              <b>Apply</b>
-            </button>
-          </div>
+        <!--<hr class="mdl-cell--10-col">-->
         </div>
+        <div class="adsample">
+          <img class="mdl-cell mdl-cell--10-col" src="images/sidead1.jpg" onclick="alert('clicked')">
+          <div class="adpad">
+          <b class="deep-blue-text">Our ad title here</b><br>
+          A short summary about this ad.
+        </div>
+        <hr>
         </div>
       </div>
 
-          </div>
+        </div>
       </main>
-    </div>
     <script src="js/jquery.js"></script>
     <script src="js/material.min.js"></script>
     <script src="js/script.js"></script>
     <script>
     $(document).ready(function(){
       getUserDetailsBySession();
+      if(user_type == "artisan"){
+        getNewJobs();
+        getAllJobs();
+      }
     });
      </script>
   </body>

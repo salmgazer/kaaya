@@ -95,6 +95,7 @@ function getUserDetailsBySession(){
       $row = $this->getUserDetails($username, $password, $user_type);
       if(!$row){
         //redirect user to login page
+        //header("location ./");
         return false;
       }
     }else{
@@ -102,19 +103,17 @@ function getUserDetailsBySession(){
     }
   }
 
-  function becomeArtisan($username, $community){
+  function becomeArtisan(){
     $this->checkUser();
-    $str_sql = "update user set type = 'artisan' where username = '$username'";
+    $user_id = $_SESSION['user_id'];
+    $str_sql = "update user set type = 'artisan' where user_id = '$user_id'";
     if (!$this->query($str_sql)) {
       return false;
     }
     //$user_id = $_
-    $str_sql = "insert into artisan(artisan_id, community) values ('".$_SESSION['user_id']."', '$community')";
-    if(!$this->query($str_sql)){
-      //Allow user to
-      return false;
-    }
-    return true;
+    $str_sql = "insert into artisan(artisan_id) values ('$user_id')";
+    //if(!$this->query($str_sql)){
+    return $this->query($str_sql);
   }
 
   function getArtisansByCommunity($community){
@@ -141,12 +140,12 @@ function getUserDetailsBySession(){
      return $row;
   }
 
-  function createJob($starting_price, $summary, $description, $community){
+  function createJob($starting_price, $summary, $description, $community, $skill_required){
     $this->checkUser();
     if(isset($_SESSION['user_id'])){
       $assigner_id = $_SESSION['user_id'];
-      $str_sql = "insert into job(assigner_id, starting_price, summary, description, community) values ('$assigner_id',
-      '$starting_price', '$summary', '$description', '$community')";
+      $str_sql = "insert into job(assigner_id, starting_price, summary, description, community, skill_required) values ('$assigner_id',
+      '$starting_price', '$summary', '$description', '$community', '$skill_required')";
       return $this->query($str_sql);
   }
     return false;
@@ -166,13 +165,111 @@ function getUserDetailsBySession(){
       $community = $_SESSION['community'];
       if($user_type == 'artisan' && $newcommunity != $_SESSION['community']){
         $str_sql = "update artisan set community = '$newcommunity' where artisan_id = '$user_id'";
+        if(!$this->query($str_sql)){
+          return false;
+        }
+        $_SESSION['community'] = $newcommunity;
         return $this->query($str_sql);
       }
     }
 
+    function getArtisanSkills(){
+      $this->checkUser();
+      $artisan_id = $_SESSION['user_id'];
+      $str_sql = "select skill.skill_name from skill inner join artisan_has_skill on skill.skill_id = artisan_has_skill.skill_id where artisan_id='$artisan_id'";
+      $this->query($str_sql);
+      $row = $this->fetch();
+      if($row == null){
+        return false;
+      }
+      return $row;
+    }
+
+    function addSkill($skill_name){
+      $this->checkUser();
+      $artisan_id = $_SESSION['user_id'];
+      $str_sql = "select skill_id from skill where skill_name = '$skill_name' limit 0,1";
+      $this->query($str_sql);
+      $theskill = $this->fetch();
+      //if skill does not exist in database already
+      if($theskill == null){
+        $str_sql = "insert into skill(skill_name) values ('$skill_name')";
+        if($this->query($str_sql)){
+          $str_sql = "select skill_id from skill where skill_name = '$skill_name'";
+          $this->query($str_sql);
+          $skill_id = $this->fetch();
+          if($skill_id == null){
+            return false;
+          }
+          $myskill_id = $skill_id['skill_id'];
+          $str_sql = "insert into artisan_has_skill (artisan_id, skill_id) values ('$artisan_id', $myskill_id)";
+          return $this->query($str_sql);
+        }
+      }
+      //if skill exists already
+      $myskill_id = $theskill['skill_id'];
+      $str_sql = "insert into artisan_has_skill (artisan_id, skill_id) values ('$artisan_id', $myskill_id)";
+      return $this->query($str_sql);
+    }
+
+    function getCompletedJobs(){
+      $this->checkUser();
+      $artisan_id = $_SESSION['user_id'];
+      $str_sql = "select * from job inner join user_has_job on job.job_id = user_has_job.job_id where user_has_job.artisan_id = '$artisan_id'";
+      $this->query($str_sql);
+      $jobs = $this->fetch();
+      if($jobs == null){
+        return false;
+      }
+      return $jobs;
+    }
+
+    function getNewJobs(){
+      $this->checkUser();
+      $artisan_id = $_SESSION['user_id'];
+      $community = $_SESSION['community'];
+
+      $str_sql = "select job.job_id,job.community, job.skill_required, job.summary, job.date_added, job.starting_price, user_has_job.job_applicaton_status from
+      job inner join skill on job.skill_required like skill.skill_name inner join artisan_has_skill
+      on artisan_has_skill.skill_id = skill.skill_id inner join user on user.user_id = artisan_has_skill.artisan_id left join user_has_job
+      on '$artisan_id' = user_has_job.artisan_id AND job.job_id = user_has_job.job_id where job.community like '$community'";
+
+      $this->query($str_sql);
+      $jobs = $this->fetch();
+      if($jobs == null){
+        return false;
+      }
+      return $jobs;
+    }
+
+    function getAllJobs(){
+      $this->checkUser();
+      $str_sql = "select job_id, skill_required, starting_price, date_added, summary from job where job_status = 'open'";
+      $this->query($str_sql);
+      $jobs = $this->fetch();
+
+      if(!$jobs){
+        return false;
+      }
+      return $jobs;
+    }
+
+    function applyForJob($job_id){
+      $this->checkUser();
+      $artisan_id = $_SESSION['user_id'];
+      $str_sql = "insert into user_has_job (artisan_id, job_id) values ('$artisan_id', $job_id)";
+      return $this->query($str_sql);
+    }
+
 }
 
-//$user = new User();
+/*$user = new User();
+$skills = $user->getArtisanSkills();
+while($skills){
+  echo ($skills['skill_name']);
+  $skills = $user->fetch();
+}*/
+//echo $_SESSION['fullname'];
 //echo $user->createJob(210, "I need my car washed", "I live in a muddy area, so car easily gets dirty. You are gonna wipe out all the mud");
 
 //$details = $user->getUserDetails("tester4real", "tester123", "ordinary");
