@@ -165,6 +165,10 @@ function getUserDetailsBySession(){
       $community = $_SESSION['community'];
       if($user_type == 'artisan' && $newcommunity != $_SESSION['community']){
         $str_sql = "update artisan set community = '$newcommunity' where artisan_id = '$user_id'";
+        if(!$this->query($str_sql)){
+          return false;
+        }
+        $_SESSION['community'] = $newcommunity;
         return $this->query($str_sql);
       }
     }
@@ -225,10 +229,10 @@ function getUserDetailsBySession(){
       $artisan_id = $_SESSION['user_id'];
       $community = $_SESSION['community'];
 
-      $str_sql = "select job.job_id, job.skill_required, job.summary, job.date_added, job.starting_price from
+      $str_sql = "select job.job_id,job.community, job.skill_required, job.summary, job.date_added, job.starting_price, user_has_job.job_applicaton_status from
       job inner join skill on job.skill_required like skill.skill_name inner join artisan_has_skill
-      on artisan_has_skill.skill_id = skill.skill_id inner join user on user.user_id = artisan_has_skill.artisan_id where
-      user.user_id = '$artisan_id' AND job.community like '$community'";
+      on artisan_has_skill.skill_id = skill.skill_id inner join user on user.user_id = artisan_has_skill.artisan_id left join user_has_job
+      on '$artisan_id' = user_has_job.artisan_id AND job.job_id = user_has_job.job_id where job.community like '$community'";
 
       $this->query($str_sql);
       $jobs = $this->fetch();
@@ -248,6 +252,13 @@ function getUserDetailsBySession(){
         return false;
       }
       return $jobs;
+    }
+
+    function applyForJob($job_id){
+      $this->checkUser();
+      $artisan_id = $_SESSION['user_id'];
+      $str_sql = "insert into user_has_job (artisan_id, job_id) values ('$artisan_id', $job_id)";
+      return $this->query($str_sql);
     }
 
 }

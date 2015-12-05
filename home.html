@@ -69,13 +69,13 @@
       </div>
       <main class="mdl-layout__content mdl-color--grey-10 light-blue">
         <div class="mdl-cell mdl-cell--12-col">
-        <div class="mdl-grid demo-content">
+        <div class="mdl-grid mdl-cell--12-col demo-content">
 
           <div class="mdl-cell mdl-cell--8-col">
             <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
             <div class="mdl-tabs__tab-bar">
                 <a href="#starks-panel" class="mdl-tabs__tab is-active">My Jobs</a>
-                <a href="#lannisters-panel" class="mdl-tabs__tab">Jobs Applied</a>
+                <!--<a href="#lannisters-panel" class="mdl-tabs__tab">Jobs Applied</a>-->
                 <a href="#targaryens-panel" class="mdl-tabs__tab">All Jobs</a>
             </div>
 
@@ -83,17 +83,17 @@
               <div class="mdl-grid" id="current-jobs-area">
             </div>
             </div>
-            <div class="mdl-tabs__panel" id="lannisters-panel">
+            <!--<div class="mdl-tabs__panel" id="lannisters-panel">
               <div class="mdl-grid" id="applied-to">
             </div>
-            </div>
+          </div>-->
             <div class="mdl-tabs__panel" id="targaryens-panel">
-              <form action="#">
+              <!--<form action="#">
               <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                 <input class="mdl-textfield__input centered" type="text" id="search_entry">
                 <label class="mdl-textfield__label" for="search_entry">Search here</label>
               </div>
-            </form>
+            </form>-->
               <div class="mdl-grid" id="all-jobs-area">
             </div>
             </div>
@@ -109,7 +109,7 @@
           <b class="deep-blue-text">Our ad title here</b><br>
           A short summary about this ad.
         </div>
-        <hr class="mdl-cell--10-col">
+        <!--<hr class="mdl-cell--10-col">-->
         </div>
         <div class="adsample">
           <img class="mdl-cell mdl-cell--10-col" src="images/sidead1.jpg" onclick="alert('clicked')">
@@ -123,15 +123,16 @@
 
         </div>
       </main>
-    </div>
     <script src="js/jquery.js"></script>
     <script src="js/material.min.js"></script>
     <script src="js/script.js"></script>
     <script>
     $(document).ready(function(){
       getUserDetailsBySession();
-      getNewJobs();
-      getAllJobs();
+      if(user_type == "artisan"){
+        getNewJobs();
+        getAllJobs();
+      }
     });
      </script>
   </body>

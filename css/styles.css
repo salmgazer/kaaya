@@ -256,7 +256,7 @@ _:-ms-input-placeholder, :root .demo-graph {
 .applybtn{
   background-color: #3b5998;
   color: #FFFFFF;
-  //width: 130px
+  /*width: 130px*/
 }
 
 .applybtn:hover{

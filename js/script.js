@@ -381,9 +381,13 @@ function getNewJobs(){
   var jobs = objResult.jobs;
   var freshjobs = "";
   var current_jobs = document.getElementById("current-jobs-area");
+  var current_job_id = jobs[0]['job_id'];
   for(var i = 0; i < jobs.length; i++){
-    singleTask = '<div class="demo-updates mdl-shadow--2dp mdl-cell mdl-color--white mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-desktop "><div class="mdl-grid"><div class="mdl-cell mdl-cell--12-col"><p>'+jobs[i]['summary']+'</p></div></div><div class="mdl-grid mdl-card__supporting-text mdl-color-text--orange-600" style="margin-top: -25px;"><div class="mdl-cell mdl-cell--12-col"><b class="jobtag deep-blue-text mdl-cell mdl-cell--6-col">'+jobs[i]['skill_required']+'</b><b class=" mdl-cell mdl-cell--6-col price">₵'+jobs[i]['starting_price']+'</b></div></div><div class="mdl-grid mdl-card__actions mdl-card--border mdl-color-text--grey-600"><div class="mdl-grid mdl-cell--12-col"><div class="mdl-cell mdl-cell--8-col"><p style="text-align: left;">Posted: '+jobs[i]['skill_required']+'</p></div><div class="mdl-cell mdl-cell--4-col"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect applybtn" onclick="applyForJob('+jobs['job_id']+')"><b>Apply</b></button></div></div></div></div>';
-    freshjobs += singleTask;
+    if(i > 0 && jobs[i]['job_id'] != current_job_id){
+      singleTask = '<div class="demo-updates mdl-shadow--2dp mdl-cell mdl-color--white mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-desktop "><div class="mdl-grid"><div class="mdl-cell mdl-cell--12-col"><p>'+jobs[i]['summary']+'</p></div></div><div class="mdl-grid mdl-card__supporting-text mdl-color-text--orange-600" style="margin-top: -25px;"><div class="mdl-cell mdl-cell--12-col"><b class="jobtag deep-blue-text mdl-cell mdl-cell--6-col">'+jobs[i]['skill_required']+'</b><b class=" mdl-cell mdl-cell--6-col price">₵'+jobs[i]['starting_price']+'</b></div></div><div class="mdl-grid mdl-card__actions mdl-card--border mdl-color-text--grey-600"><div class="mdl-grid mdl-cell--12-col"><div class="mdl-cell mdl-cell--8-col"><p style="text-align: left;">Posted: '+jobs[i]['job_applicaton_status']+'</p></div><div class="mdl-cell mdl-cell--4-col"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect applybtn apply-btn'+jobs[i]['job_id']+'" onclick="applyForJob('+jobs[i]['job_id']+')" id="apply-btn'+jobs[i]['job_id']+'"><b>Apply</b></button></div></div></div></div>';
+      freshjobs += singleTask;
+      current_job_id = jobs[i]['job_id'];
+    }
   }
   current_jobs.innerHTML = freshjobs;
 }
@@ -399,10 +403,33 @@ function getAllJobs(){
   var jobs = objResult.jobs;
   var freshjobs = "";
   var all_jobs = document.getElementById("all-jobs-area");
-
+  var singleTask = "";
   for(var i = 0; i < jobs.length; i++){
-    singleTask = '<div class="demo-updates mdl-shadow--2dp mdl-cell mdl-color--white mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-desktop "><div class="mdl-grid"><div class="mdl-cell mdl-cell--12-col"><p>'+jobs[i]['summary']+'</p></div></div><div class="mdl-grid mdl-card__supporting-text mdl-color-text--orange-600" style="margin-top: -25px;"><div class="mdl-cell mdl-cell--12-col"><b class="jobtag deep-blue-text mdl-cell mdl-cell--6-col">'+jobs[i]['skill_required']+'</b><b class=" mdl-cell mdl-cell--6-col price">₵'+jobs[i]['starting_price']+'</b></div></div><div class="mdl-grid mdl-card__actions mdl-card--border mdl-color-text--grey-600"><div class="mdl-grid mdl-cell--12-col"><div class="mdl-cell mdl-cell--8-col"><p style="text-align: left;">Posted: '+jobs[i]['skill_required']+'</p></div><div class="mdl-cell mdl-cell--4-col"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect applybtn" onclick="applyForJob('+jobs['job_id']+')"><b>Apply</b></button></div></div></div></div>';
+    //alert(jobs[i]['job_application_status']);
+    if(jobs[i]['job_application_status'] == 'applied'){
+        singleTask = '<div class="demo-updates mdl-shadow--2dp mdl-cell mdl-color--white mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-desktop "><div class="mdl-grid"><div class="mdl-cell mdl-cell--12-col"><p>'+jobs[i]['summary']+'</p></div></div><div class="mdl-grid mdl-card__supporting-text mdl-color-text--orange-600" style="margin-top: -25px;"><div class="mdl-cell mdl-cell--12-col"><b class="jobtag deep-blue-text mdl-cell mdl-cell--6-col">'+jobs[i]['skill_required']+'</b><b class=" mdl-cell mdl-cell--6-col price">₵'+jobs[i]['starting_price']+'</b></div></div><div class="mdl-grid mdl-card__actions mdl-card--border mdl-color-text--grey-600"><div class="mdl-grid mdl-cell--12-col"><div class="mdl-cell mdl-cell--8-col"><p style="text-align: left;">Posted: '+jobs[i]['date_added']+'</p></div><div class="mdl-cell mdl-cell--4-col"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect applybtn apply-btn'+jobs[i]['job_id']+'" onclick="applyForJob('+jobs[i]['job_id']+')" id="apply-btn'+jobs[i]['job_id']+'" disabled><b>Apply</b></button></div></div></div></div>';
+
+      }
+    else {
+      singleTask = '<div class="demo-updates mdl-shadow--2dp mdl-cell mdl-color--white mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-desktop "><div class="mdl-grid"><div class="mdl-cell mdl-cell--12-col"><p>'+jobs[i]['summary']+'</p></div></div><div class="mdl-grid mdl-card__supporting-text mdl-color-text--orange-600" style="margin-top: -25px;"><div class="mdl-cell mdl-cell--12-col"><b class="jobtag deep-blue-text mdl-cell mdl-cell--6-col">'+jobs[i]['skill_required']+'</b><b class=" mdl-cell mdl-cell--6-col price">₵'+jobs[i]['starting_price']+'</b></div></div><div class="mdl-grid mdl-card__actions mdl-card--border mdl-color-text--grey-600"><div class="mdl-grid mdl-cell--12-col"><div class="mdl-cell mdl-cell--8-col"><p style="text-align: left;">Posted: '+jobs[i]['date_added']+'</p></div><div class="mdl-cell mdl-cell--4-col"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect applybtn apply-btn'+jobs[i]['job_id']+'" onclick="applyForJob('+jobs[i]['job_id']+')" id="apply-btn'+jobs[i]['job_id']+'"><b>Apply</b></button></div></div></div></div>';
+      freshjobs += singleTask;
+    }
     freshjobs += singleTask;
   }
   all_jobs.innerHTML = freshjobs;
+}
+
+function applyForJob(job_id){
+  var strUrl = link+"18&job_id="+job_id;
+  var objResult = sendRequest(strUrl);
+
+  if(objResult.result == 0){
+    alert(objResult.message);
+    return;
+  }
+  var applyBtn = document.getElementsByClassName('apply-btn'+job_id);
+  applyBtn.innerHTML = "<i>Applied</i>";
+  applyBtn.style.color = "red";
+  applyBtn.disabled = true;
+
 }

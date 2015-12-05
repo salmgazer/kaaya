@@ -63,8 +63,11 @@ switch ($cmd) {
   case 16:
     getNewJobs();
     break;
-  case 17;
+  case 17:
     getAllJobs();
+    break;
+  case 18:
+    applyForJob();
     break;
 
   default:
@@ -301,6 +304,19 @@ function getAllJobs(){
     }
   }
   echo "]}";
+}
+
+function applyForJob(){
+  include_once "../model/User.php";
+  $user = new User();
+
+  $job_id = $_REQUEST['job_id'];
+  if(!$user->applyForJob($job_id)){
+    echo '{"result": 0, "message": "You application failed"}';
+    return;
+  }
+  echo '{"result": 1, "message": "You have successfully applied for this job"}';
+  return;
 }
 
 
